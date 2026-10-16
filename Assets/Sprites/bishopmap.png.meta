@@ -1,82 +1,82 @@
 fileFormatVersion: 2
-guid: ca67a7b5753a44efb88f323cc0854213
+guid: 822ddd24d2c68456f946cfdd14578952
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -7030997610153706296
-    second: HorseMap_0
+      213: -5987934365084323104
+    second: "\u0421\u043B\u043E\u043DMap_0"
   - first:
-      213: 4989354668149812013
-    second: HorseMap_1
+      213: -2556357106231746050
+    second: "\u0421\u043B\u043E\u043DMap_1"
   - first:
-      213: 7795446643764906344
-    second: HorseMap_2
+      213: -1543391123508586195
+    second: "\u0421\u043B\u043E\u043DMap_2"
   - first:
-      213: -9146659800891339789
-    second: HorseMap_3
+      213: 1498896364115370733
+    second: "\u0421\u043B\u043E\u043DMap_3"
   - first:
-      213: 7954923285793756138
-    second: HorseMap_4
+      213: 7405871846646426859
+    second: "\u0421\u043B\u043E\u043DMap_4"
   - first:
-      213: -4205541167491976790
-    second: HorseMap_5
+      213: 2243394915670166009
+    second: "\u0421\u043B\u043E\u043DMap_5"
   - first:
-      213: 9174308389722458896
-    second: HorseMap_6
+      213: -146382649207974274
+    second: "\u0421\u043B\u043E\u043DMap_6"
   - first:
-      213: -4748457322243277620
-    second: HorseMap_7
+      213: 2449652965169276327
+    second: "\u0421\u043B\u043E\u043DMap_7"
   - first:
-      213: 8047142849672480406
-    second: HorseMap_8
+      213: 4601379577369120873
+    second: "\u0421\u043B\u043E\u043DMap_8"
   - first:
-      213: 4022379471083646749
-    second: HorseMap_9
+      213: -7391162549095819029
+    second: "\u0421\u043B\u043E\u043DMap_9"
   - first:
-      213: -3378509156609373475
-    second: HorseMap_10
+      213: 4482691132166802310
+    second: "\u0421\u043B\u043E\u043DMap_10"
   - first:
-      213: 1396054624612869058
-    second: HorseMap_11
+      213: 103133291270625487
+    second: "\u0421\u043B\u043E\u043DMap_11"
   - first:
-      213: -3778184248731359509
-    second: HorseMap_12
+      213: 826017785438235709
+    second: "\u0421\u043B\u043E\u043DMap_12"
   - first:
-      213: -634130942712368501
-    second: HorseMap_13
+      213: 5625005330418477061
+    second: "\u0421\u043B\u043E\u043DMap_13"
   - first:
-      213: -5041628409824971122
-    second: HorseMap_14
+      213: 2894423114746183810
+    second: "\u0421\u043B\u043E\u043DMap_14"
   - first:
-      213: -2033052732587038272
-    second: HorseMap_15
+      213: 3699741643816714479
+    second: "\u0421\u043B\u043E\u043DMap_15"
   - first:
-      213: 8793905496542418188
-    second: HorseMap_16
+      213: -4061012706041314850
+    second: "\u0421\u043B\u043E\u043DMap_16"
   - first:
-      213: 4698657133139058344
-    second: HorseMap_17
+      213: 8233283383313000919
+    second: "\u0421\u043B\u043E\u043DMap_17"
   - first:
-      213: 8520308774444285388
-    second: HorseMap_18
+      213: 2201390646547977012
+    second: "\u0421\u043B\u043E\u043DMap_18"
   - first:
-      213: 3383983462849712925
-    second: HorseMap_19
+      213: -2465795277874891476
+    second: "\u0421\u043B\u043E\u043DMap_19"
   - first:
-      213: -2334405998873054660
-    second: HorseMap_20
+      213: 6893253118068780059
+    second: "\u0421\u043B\u043E\u043DMap_20"
   - first:
-      213: -5548687998002088009
-    second: HorseMap_21
+      213: 7220683363869620756
+    second: "\u0421\u043B\u043E\u043DMap_21"
   - first:
-      213: 581342835928738204
-    second: HorseMap_22
+      213: -5672731312140206856
+    second: "\u0421\u043B\u043E\u043DMap_22"
   - first:
-      213: -2994174760469112537
-    second: HorseMap_23
+      213: -2575554342728809529
+    second: "\u0421\u043B\u043E\u043DMap_23"
   - first:
-      213: -9013077952598698087
-    second: HorseMap_24
+      213: -4201193139374853078
+    second: "\u0421\u043B\u043E\u043DMap_24"
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -109,7 +109,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 1
+    filterMode: 0
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -172,7 +172,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: HorseMap_0
+      name: "\u0421\u043B\u043E\u043DMap_0"
       rect:
         serializedVersion: 2
         x: 0
@@ -187,14 +187,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 8ccfa26ece0ec6e90800000000000000
-      internalID: -7030997610153706296
+      spriteID: 0e27bce9b6596eca0800000000000000
+      internalID: -5987934365084323104
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: HorseMap_1
+      name: "\u0421\u043B\u043E\u043DMap_1"
       rect:
         serializedVersion: 2
         x: 0
@@ -209,14 +209,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: d2ba18dc2afbd3540800000000000000
-      internalID: 4989354668149812013
+      spriteID: ef1e20c81cef58cd0800000000000000
+      internalID: -2556357106231746050
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: HorseMap_2
+      name: "\u0421\u043B\u043E\u043DMap_2"
       rect:
         serializedVersion: 2
         x: 6
@@ -231,14 +231,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 8694e13ab6dfe2c60800000000000000
-      internalID: 7795446643764906344
+      spriteID: d2997cd43f5c49ae0800000000000000
+      internalID: -1543391123508586195
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: HorseMap_3
+      name: "\u0421\u043B\u043E\u043DMap_3"
       rect:
         serializedVersion: 2
         x: 6
@@ -253,14 +253,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 3fbc6864f59801180800000000000000
-      internalID: -9146659800891339789
+      spriteID: de2a83a3d462dc410800000000000000
+      internalID: 1498896364115370733
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: HorseMap_4
+      name: "\u0421\u043B\u043E\u043DMap_4"
       rect:
         serializedVersion: 2
         x: 13
@@ -275,14 +275,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: ae35839d490956e60800000000000000
-      internalID: 7954923285793756138
+      spriteID: bec2d6fd431f6c660800000000000000
+      internalID: 7405871846646426859
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: HorseMap_5
+      name: "\u0421\u043B\u043E\u043DMap_5"
       rect:
         serializedVersion: 2
         x: 13
@@ -297,14 +297,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: aa1fb5f079ae2a5c0800000000000000
-      internalID: -4205541167491976790
+      spriteID: 9f9007f2ac3222f10800000000000000
+      internalID: 2243394915670166009
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: HorseMap_6
+      name: "\u0421\u043B\u043E\u043DMap_6"
       rect:
         serializedVersion: 2
         x: 20
@@ -319,14 +319,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 01b0b457fd0b15f70800000000000000
-      internalID: 9174308389722458896
+      spriteID: e769da091c1f7fdf0800000000000000
+      internalID: -146382649207974274
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: HorseMap_7
+      name: "\u0421\u043B\u043E\u043DMap_7"
       rect:
         serializedVersion: 2
         x: 20
@@ -341,14 +341,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: ccc369c49371a1eb0800000000000000
-      internalID: -4748457322243277620
+      spriteID: 7a5a5eb946aeef120800000000000000
+      internalID: 2449652965169276327
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: HorseMap_8
+      name: "\u0421\u043B\u043E\u043DMap_8"
       rect:
         serializedVersion: 2
         x: 27
@@ -363,14 +363,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 6968d8349c13daf60800000000000000
-      internalID: 8047142849672480406
+      spriteID: 960d2d1b8526bdf30800000000000000
+      internalID: 4601379577369120873
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: HorseMap_9
+      name: "\u0421\u043B\u043E\u043DMap_9"
       rect:
         serializedVersion: 2
         x: 27
@@ -385,14 +385,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: d1fa3c541dc52d730800000000000000
-      internalID: 4022379471083646749
+      spriteID: be819f752d05d6990800000000000000
+      internalID: -7391162549095819029
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: HorseMap_10
+      name: "\u0421\u043B\u043E\u043DMap_10"
       rect:
         serializedVersion: 2
         x: 0
@@ -407,14 +407,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: ddac4e972df1d11d0800000000000000
-      internalID: -3378509156609373475
+      spriteID: 68b889a95d7b53e30800000000000000
+      internalID: 4482691132166802310
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: HorseMap_11
+      name: "\u0421\u043B\u043E\u043DMap_11"
       rect:
         serializedVersion: 2
         x: 0
@@ -429,14 +429,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 2c36713d848cf5310800000000000000
-      internalID: 1396054624612869058
+      spriteID: fc8d3b69e276e6100800000000000000
+      internalID: 103133291270625487
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: HorseMap_12
+      name: "\u0421\u043B\u043E\u043DMap_12"
       rect:
         serializedVersion: 2
         x: 6
@@ -451,14 +451,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: be624668171319bc0800000000000000
-      internalID: -3778184248731359509
+      spriteID: d3c6337acca967b00800000000000000
+      internalID: 826017785438235709
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: HorseMap_13
+      name: "\u0421\u043B\u043E\u043DMap_13"
       rect:
         serializedVersion: 2
         x: 6
@@ -473,14 +473,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: b82bb82744d1337f0800000000000000
-      internalID: -634130942712368501
+      spriteID: 508a543ab88001e40800000000000000
+      internalID: 5625005330418477061
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: HorseMap_14
+      name: "\u0421\u043B\u043E\u043DMap_14"
       rect:
         serializedVersion: 2
         x: 13
@@ -495,14 +495,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: e867dd64ca9880ab0800000000000000
-      internalID: -5041628409824971122
+      spriteID: 2804020dc7e0b2820800000000000000
+      internalID: 2894423114746183810
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: HorseMap_15
+      name: "\u0421\u043B\u043E\u043DMap_15"
       rect:
         serializedVersion: 2
         x: 13
@@ -517,14 +517,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 0c92380bf4529c3e0800000000000000
-      internalID: -2033052732587038272
+      spriteID: fe04a684c6f185330800000000000000
+      internalID: 3699741643816714479
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: HorseMap_16
+      name: "\u0421\u043B\u043E\u043DMap_16"
       rect:
         serializedVersion: 2
         x: 20
@@ -539,14 +539,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: c0514cdf47a3a0a70800000000000000
-      internalID: 8793905496542418188
+      spriteID: ed14f04c57264a7c0800000000000000
+      internalID: -4061012706041314850
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: HorseMap_17
+      name: "\u0421\u043B\u043E\u043DMap_17"
       rect:
         serializedVersion: 2
         x: 20
@@ -561,14 +561,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 8aedb1e94cbf43140800000000000000
-      internalID: 4698657133139058344
+      spriteID: 7d96f758d9f724270800000000000000
+      internalID: 8233283383313000919
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: HorseMap_18
+      name: "\u0421\u043B\u043E\u043DMap_18"
       rect:
         serializedVersion: 2
         x: 27
@@ -583,14 +583,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: ccd356510b73e3670800000000000000
-      internalID: 8520308774444285388
+      spriteID: 4331c5b2129ec8e10800000000000000
+      internalID: 2201390646547977012
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: HorseMap_19
+      name: "\u0421\u043B\u043E\u043DMap_19"
       rect:
         serializedVersion: 2
         x: 27
@@ -605,14 +605,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: d1314f4c70356fe20800000000000000
-      internalID: 3383983462849712925
+      spriteID: c257e65524cb7cdd0800000000000000
+      internalID: -2465795277874891476
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: HorseMap_20
+      name: "\u0421\u043B\u043E\u043DMap_20"
       rect:
         serializedVersion: 2
         x: 0
@@ -627,14 +627,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: c3271abbc168a9fd0800000000000000
-      internalID: -2334405998873054660
+      spriteID: b1ce7595031c9af50800000000000000
+      internalID: 6893253118068780059
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: HorseMap_21
+      name: "\u0421\u043B\u043E\u043DMap_21"
       rect:
         serializedVersion: 2
         x: 6
@@ -649,14 +649,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 7b7bc9df9a91ff2b0800000000000000
-      internalID: -5548687998002088009
+      spriteID: 41a750b3345053460800000000000000
+      internalID: 7220683363869620756
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: HorseMap_22
+      name: "\u0421\u043B\u043E\u043DMap_22"
       rect:
         serializedVersion: 2
         x: 13
@@ -671,14 +671,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: c99204caa38511800800000000000000
-      internalID: 581342835928738204
+      spriteID: 8fcb5a15de86641b0800000000000000
+      internalID: -5672731312140206856
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: HorseMap_23
+      name: "\u0421\u043B\u043E\u043DMap_23"
       rect:
         serializedVersion: 2
         x: 20
@@ -693,14 +693,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 7295cce4bed8276d0800000000000000
-      internalID: -2994174760469112537
+      spriteID: 7c34fed98fac14cd0800000000000000
+      internalID: -2575554342728809529
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: HorseMap_24
+      name: "\u0421\u043B\u043E\u043DMap_24"
       rect:
         serializedVersion: 2
         x: 27
@@ -715,8 +715,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 997137efa5d1be280800000000000000
-      internalID: -9013077952598698087
+      spriteID: a24f0ce391d52b5c0800000000000000
+      internalID: -4201193139374853078
       vertices: []
       indices: 
       edges: []
@@ -735,31 +735,31 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      HorseMap_0: -7030997610153706296
-      HorseMap_1: 4989354668149812013
-      HorseMap_10: -3378509156609373475
-      HorseMap_11: 1396054624612869058
-      HorseMap_12: -3778184248731359509
-      HorseMap_13: -634130942712368501
-      HorseMap_14: -5041628409824971122
-      HorseMap_15: -2033052732587038272
-      HorseMap_16: 8793905496542418188
-      HorseMap_17: 4698657133139058344
-      HorseMap_18: 8520308774444285388
-      HorseMap_19: 3383983462849712925
-      HorseMap_2: 7795446643764906344
-      HorseMap_20: -2334405998873054660
-      HorseMap_21: -5548687998002088009
-      HorseMap_22: 581342835928738204
-      HorseMap_23: -2994174760469112537
-      HorseMap_24: -9013077952598698087
-      HorseMap_3: -9146659800891339789
-      HorseMap_4: 7954923285793756138
-      HorseMap_5: -4205541167491976790
-      HorseMap_6: 9174308389722458896
-      HorseMap_7: -4748457322243277620
-      HorseMap_8: 8047142849672480406
-      HorseMap_9: 4022379471083646749
+      "\u0421\u043B\u043E\u043DMap_0": -5987934365084323104
+      "\u0421\u043B\u043E\u043DMap_1": -2556357106231746050
+      "\u0421\u043B\u043E\u043DMap_10": 4482691132166802310
+      "\u0421\u043B\u043E\u043DMap_11": 103133291270625487
+      "\u0421\u043B\u043E\u043DMap_12": 826017785438235709
+      "\u0421\u043B\u043E\u043DMap_13": 5625005330418477061
+      "\u0421\u043B\u043E\u043DMap_14": 2894423114746183810
+      "\u0421\u043B\u043E\u043DMap_15": 3699741643816714479
+      "\u0421\u043B\u043E\u043DMap_16": -4061012706041314850
+      "\u0421\u043B\u043E\u043DMap_17": 8233283383313000919
+      "\u0421\u043B\u043E\u043DMap_18": 2201390646547977012
+      "\u0421\u043B\u043E\u043DMap_19": -2465795277874891476
+      "\u0421\u043B\u043E\u043DMap_2": -1543391123508586195
+      "\u0421\u043B\u043E\u043DMap_20": 6893253118068780059
+      "\u0421\u043B\u043E\u043DMap_21": 7220683363869620756
+      "\u0421\u043B\u043E\u043DMap_22": -5672731312140206856
+      "\u0421\u043B\u043E\u043DMap_23": -2575554342728809529
+      "\u0421\u043B\u043E\u043DMap_24": -4201193139374853078
+      "\u0421\u043B\u043E\u043DMap_3": 1498896364115370733
+      "\u0421\u043B\u043E\u043DMap_4": 7405871846646426859
+      "\u0421\u043B\u043E\u043DMap_5": 2243394915670166009
+      "\u0421\u043B\u043E\u043DMap_6": -146382649207974274
+      "\u0421\u043B\u043E\u043DMap_7": 2449652965169276327
+      "\u0421\u043B\u043E\u043DMap_8": 4601379577369120873
+      "\u0421\u043B\u043E\u043DMap_9": -7391162549095819029
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
