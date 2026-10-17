@@ -7,6 +7,7 @@ public class BoardManager : MonoBehaviour
 
     private readonly Vector3Int _origin = new(-4, -5, 0);
 
+
     public Vector3Int GetTilePosition(int x, int y)
     {
         return _origin + new Vector3Int(x, y, 0);

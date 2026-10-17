@@ -26,8 +26,9 @@ public class ChessPiece
     public int Health { get; private set; }
     public int AttackPower { get; private set; }
     public PieceType Type { get; private set; }
+    public PieceColor Color { get; private set; }
 }
-public readonly struct CellPosition
+public struct CellPosition
 {
     public int X { get; }
     public int Y { get; }
@@ -47,4 +48,10 @@ public enum PieceType
     Bishop,
     Queen,
     King
+}
+
+public enum PieceColor
+{
+    White,
+    Black
 }
