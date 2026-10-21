@@ -115,3 +115,11 @@ InitTestScene*.unity*
 .DS_Store
 Assets/.DS_Store
 .vscode
+# Track manually created server projects
+!/Server/**/*.csproj
+!/Server/**/*.sln
+!/Server/**/*.slnx
+
+# Ignore server build results
+/Server/**/bin/
+/Server/**/obj/
