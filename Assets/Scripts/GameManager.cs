@@ -5,6 +5,7 @@ public class GameManager : MonoBehaviour
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     public Board Board;
+    public int PiecesCount { get; private set; }
     void Start()
     {
         StartGame();
@@ -14,6 +15,29 @@ public class GameManager : MonoBehaviour
     private void StartGame()
     {
         Board = new Board();
+        
+    }
 
+    public void OnPieceDefeated()
+    {
+        PiecesCount--;
+        if (PiecesCount <= 0)
+        {
+            Debug.Log("Game Over");
+        }
+    }
+
+    public void CompleteWave()
+    {
+        
+    }
+    public void GameOver()
+    {
+        Debug.Log("Game Over");
+    }
+
+    public void AddPiece()
+    {
+        PiecesCount++;
     }
 }
