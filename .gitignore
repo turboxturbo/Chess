@@ -123,3 +123,4 @@ Assets/.DS_Store
 # Ignore server build results
 /Server/**/bin/
 /Server/**/obj/
+Server/.idea/
