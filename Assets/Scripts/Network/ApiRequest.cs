@@ -1,6 +1,5 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
 
@@ -15,6 +14,11 @@ public static class ApiRequest
     public static void Login(Action<LoginAnswer> callback, LoginRequest login)
     {
         GameManager.Instance.StartCoroutine(LoginCoroutine(callback, login));
+    }
+
+    public static void Reg(Action<RegAnswer> callback, RegRequest login)
+    {
+        GameManager.Instance.StartCoroutine(RegCoroutine(callback, login));
     }
 
     public static IEnumerator LoginCoroutine(Action<LoginAnswer> callback, LoginRequest login)
@@ -33,6 +37,32 @@ public static class ApiRequest
             {
                 string jsonResponse = request.downloadHandler.text;
                 LoginAnswer answer = JsonUtility.FromJson<LoginAnswer>(jsonResponse);
+                Debug.Log(answer);
+                callback?.Invoke(answer);
+            }
+            else
+            {
+                Debug.Log(request.error);
+            }
+        }
+    }
+
+    public static IEnumerator RegCoroutine(Action<RegAnswer> callback, RegRequest login)
+    {
+        string jsonData = JsonUtility.ToJson(login);
+        Debug.Log(jsonData);
+        byte[] bodyRow = System.Text.Encoding.UTF8.GetBytes(jsonData);
+        using (UnityWebRequest request = new UnityWebRequest(_baseUrl + "MotoristCotroller/auth", "POST"))
+        {
+            request.uploadHandler = new UploadHandlerRaw(bodyRow);
+            request.downloadHandler = new DownloadHandlerBuffer();
+            request.certificateHandler = new AcceptAllCertificates();
+            request.SetRequestHeader("Content-Type", "application/json");
+            yield return request.SendWebRequest();
+            if (request.result == UnityWebRequest.Result.Success) //толькой 200, поэтому в Api используем только OkObjectResult. Остальные выдают ошибку
+            {
+                string jsonResponse = request.downloadHandler.text;
+                RegAnswer answer = JsonUtility.FromJson<RegAnswer>(jsonResponse);
                 Debug.Log(answer);
                 callback?.Invoke(answer);
             }
