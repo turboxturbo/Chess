@@ -3,7 +3,6 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     public Board Board;
     public int PiecesCount { get; private set; }
     void Start()
@@ -23,7 +22,7 @@ public class GameManager : MonoBehaviour
         PiecesCount--;
         if (PiecesCount <= 0)
         {
-            Debug.Log("Game Over");
+            CompleteWave();
         }
     }
 
