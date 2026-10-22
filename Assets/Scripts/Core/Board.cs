@@ -1,3 +1,5 @@
+using System;
+
 public class Board
 {
     public Cell[,] ChessBoard {get;} = new Cell[8, 8];
@@ -13,26 +15,56 @@ public class Board
         }
     }
 
-    public void PlacePiece(ChessPiece piece, int x, int y)
+    // public void PlacePiece(ChessPiece piece, int x, int y)
+    // {
+    //     if (!IsInsideBoard(x, y) || piece == null)
+    //     {
+    //         return;
+    //     }
+    //     Cell target = ChessBoard[x, y];
+    //     if (!target.IsEmpty)
+    //     {
+    //         return;
+    //     }
+    //     target.CurrentPiece = piece;
+    // }
+    public void InitializeBoard()
     {
-        if (!IsInsideBoard(x, y) || piece == null)
-        {
-            return;
-        }
-        Cell target = ChessBoard[x, y];
-        if (!target.IsEmpty)
-        {
-            return;
-        }
-        target.CurrentPiece = piece;
+        
     }
 
-    public bool IsInsideBoard(int x, int y)
+    public bool IsPathClear(
+    int fromX,
+    int fromY,
+    int toX,
+    int toY)
+{
+    int stepX = Math.Sign(toX - fromX);
+    int stepY = Math.Sign(toY - fromY);
+
+    int x = fromX + stepX;
+    int y = fromY + stepY;
+
+    while (x != toX || y != toY)
+    {
+        if (!ChessBoard[x, y].IsEmpty)
+        {
+            return false;
+        }
+
+        x += stepX;
+        y += stepY;
+    }
+
+    return true;
+}
+
+    private bool IsInsideBoard(int x, int y)
     {
         return x >= 0 && x < 8 && y >= 0 && y < 8;
     }
 
-    public bool MovePiece(int fromX, int fromY, int toX, int toY)
+    public bool TryMovePiece(int fromX, int fromY, int toX, int toY)
     {
         if (!IsInsideBoard(fromX, fromY) || !IsInsideBoard(toX, toY))
         {

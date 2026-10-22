@@ -7,6 +7,8 @@ public abstract class ChessPiece
         Color = color;
         Health = health;
     }
+
+    public abstract bool CanMove(Board board, int fromX, int fromY, int toX, int toY);
 }
 
 
