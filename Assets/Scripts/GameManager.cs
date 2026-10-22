@@ -23,7 +23,7 @@ public class GameManager : MonoBehaviour
         PiecesCount--;
         if (PiecesCount <= 0)
         {
-            Debug.Log("Game Over");
+            CompleteWave();
         }
     }
 
