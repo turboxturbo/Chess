@@ -5,5 +5,6 @@ namespace API.Interfaces;
 
 public interface IGame
 {
-    Task<IActionResult> Create(CreateGameReq request);
+    Task<IActionResult> StartGame(CreateGameReq request);
+    Task<IActionResult> Endgame([FromBody] int idGame);
 }

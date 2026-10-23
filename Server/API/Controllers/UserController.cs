@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace API.Controllers;
 
 [ApiController]
+[Route("api/[controller]")]
 public class UserController : Controller
 {
     private readonly IUser _userI;
@@ -14,14 +15,14 @@ public class UserController : Controller
     }
 
     [HttpGet]
-    [Route("api/[controller]/[action]")]
+    [Route("[action]")]
     public async Task<IActionResult> Auth(AuthReq  request)
     {
         return await _userI.Auth(request);
     }
 
     [HttpPost]
-    [Route("api/[controller]/[action]")]
+    [Route("[action]")]
     public async Task<IActionResult> Reg(RegReq request)
     {
         return await _userI.Reg(request);

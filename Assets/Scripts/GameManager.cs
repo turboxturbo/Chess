@@ -50,7 +50,7 @@ public class GameManager : MonoBehaviour
 
     public void AddPiece()
     {
-        Board.TryGetSpawnCell();
+        //Board.TryGetSpawnCell();
         PiecesCount++;
     }
 }

@@ -16,7 +16,7 @@ public class GameService : IGame
         _db = db;
     }
 
-    public async Task<IActionResult> Create(CreateGameReq request)
+    public async Task<IActionResult> StartGame(CreateGameReq request)
     {
         bool userExists = await _db.Users.AnyAsync(user => user.IdUser == request.IdUser);
 
@@ -41,6 +41,23 @@ public class GameService : IGame
         _db.Games.Add(game);
         await _db.SaveChangesAsync();
 
+        return new OkObjectResult(new  { status = true, data = game });
+    }
+
+    public async Task<IActionResult> Endgame([FromBody] int idGame)
+    {
+        var game = await _db.Games.FirstOrDefaultAsync(g => g.IdGame ==  idGame);
+        if (game == null)
+        {
+            return new NotFoundObjectResult(new
+            {
+                status = false,
+                message = "Game is not found"
+            });
+        }
+        
+        game.EndAt =  DateTime.UtcNow;
+        await _db.SaveChangesAsync();
         return new OkObjectResult(new  { status = true, data = game });
     }
 }

@@ -11,37 +11,23 @@ namespace API.Controllers;
 public class GameController : ControllerBase
 {
     private readonly IGame _game;
-    private readonly DataBaseContext _db;
 
     public GameController(IGame game, DataBaseContext db)
     {
         _game = game;
-        _db = db;
     }
 
     [HttpPost]
-    public Task<IActionResult> Create([FromBody] CreateGameReq request)
+    [Route("[action]")]
+    public async Task<IActionResult> StartGame([FromBody] CreateGameReq request)
     {
-        return _game.Create(request);
+        return await _game.StartGame(request);
     }
 
-    [HttpGet("{id:int}")]
-    public async Task<IActionResult> GetById(int id)
+    [HttpPut]
+    [Route("[action]")]
+    public async Task<IActionResult> Endgame([FromBody] int idGame)
     {
-        var game = await _db.Games
-            .AsNoTracking()
-            .Where(game => game.IdGame == id)
-            .Select(game => new
-            {
-                game.IdGame,
-                game.IdUser,
-                game.Status,
-                game.WavesCount,
-                game.CreatedAt,
-                game.EndAt
-            })
-            .FirstOrDefaultAsync();
-
-        return game == null ? NotFound() : Ok(game);
+        return await _game.Endgame(idGame);
     }
 }
