@@ -11,25 +11,18 @@ public class Pawn : ChessPiece
     {
         int direction = Color == PieceColor.White ? 1 : -1;
         int dx = Math.Abs(toX - fromX);
-        int dy = Math.Abs(toY - fromY);
-
-        if (dx == 0 && dy == 0)
-        {
-            return false;
-        }
+        int dy = toY - fromY;
 
         Cell target = board.ChessBoard[toX, toY];
 
-        // Обычный ход вперёд.
         if (dx == 0 && dy == direction)
         {
             return target.IsEmpty;
         }
-        
-        if (Math.Abs(dx) == 1 && dy == direction)
+
+        if (dx == 1 && dy == direction)
         {
-            return !target.IsEmpty &&
-               target.CurrentPiece.Color != Color;
+            return !target.IsEmpty && target.CurrentPiece.Color != Color;
         }
 
         return false;
