@@ -40,16 +40,17 @@ public class GameManager : MonoBehaviour
         if (WaveCount < 6)
         {
             WaveCount++;
+            AddPiece();
         }
-        
     }
     public void GameOver()
     {
-        
+        Time.timeScale = 0;
     }
 
     public void AddPiece()
     {
+        Board.TryGetSpawnCell();
         PiecesCount++;
     }
 }

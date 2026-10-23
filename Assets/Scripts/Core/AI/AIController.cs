@@ -4,12 +4,11 @@ using System.Collections.Generic;
 
 public class AIController
 {
-     private readonly MoveGenerator _moveGenerator;
+    private readonly MoveGenerator _moveGenerator;
     private readonly MoveEvaluator _moveEvaluator;
     private readonly MoveEvaluationWeights _weights;
     private readonly Random _random;
     private readonly int _movesPerRound;
-
     public event Action<Move, ChessPiece> MoveExecuted;
 
     public AIController(MoveGenerator moveGenerator, MoveEvaluator moveEvaluator, MoveEvaluationWeights weights, int movesPerRound = 2, int? randomSeed = null)
@@ -133,7 +132,6 @@ public class AIController
     {
         public Move Move { get; }
         public float Score { get; }
-
         public ScoredMove(Move move, float score)
         {
             Move = move;
