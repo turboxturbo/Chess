@@ -15,22 +15,26 @@ public class Board
         }
     }
 
-    // public void PlacePiece(ChessPiece piece, int x, int y)
-    // {
-    //     if (!IsInsideBoard(x, y) || piece == null)
-    //     {
-    //         return;
-    //     }
-    //     Cell target = ChessBoard[x, y];
-    //     if (!target.IsEmpty)
-    //     {
-    //         return;
-    //     }
-    //     target.CurrentPiece = piece;
-    // }
+    public void PlacePiece(ChessPiece piece, int x, int y)
+    {
+        if (!IsInsideBoard(x, y) || piece == null)
+        {
+            return;
+        }
+        Cell target = ChessBoard[x, y];
+        if (!target.IsEmpty)
+        {
+            return;
+        }
+        target.CurrentPiece = piece;
+    }
     public void InitializeBoard()
     {
-        
+        for (int i = 0; i < 8; i++)
+        {
+            
+            
+        }
     }
 
     public bool IsPathClear(
@@ -73,7 +77,6 @@ public class Board
             return false;
         }
 
-        // 2. Нельзя ходить на ту же клетку.
         if (fromX == toX && fromY == toY)
         {
             return false;
@@ -82,7 +85,6 @@ public class Board
         Cell fromCell = ChessBoard[fromX, fromY];
         Cell toCell = ChessBoard[toX, toY];
 
-        // 3. На исходной клетке должна находиться фигура.
         if (fromCell.IsEmpty)
         {
             return false;
@@ -91,14 +93,12 @@ public class Board
         ChessPiece movingPiece = fromCell.CurrentPiece;
         ChessPiece targetPiece = toCell.CurrentPiece;
 
-        // 4. Нельзя съесть свою фигуру.
         if (targetPiece != null &&
             targetPiece.Color == movingPiece.Color)
         {
             return false;
         }
 
-        // 5. Спрашиваем фигуру, умеет ли она так ходить.
         if (!movingPiece.CanMove(
                 this,
                 fromX,
@@ -109,10 +109,8 @@ public class Board
             return false;
         }
 
-        // 6. Запоминаем съеденную фигуру.
         capturedPiece = targetPiece;
 
-        // 7. Выполняем ход.
         toCell.CurrentPiece = movingPiece;
         fromCell.CurrentPiece = null;
 
