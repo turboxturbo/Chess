@@ -24,6 +24,7 @@ public class GameManager : MonoBehaviour
     public void StartGame()
     {
         Board = new Board();
+        Board.InitializeBoard();
     }
 
     public void OnPieceDefeated()

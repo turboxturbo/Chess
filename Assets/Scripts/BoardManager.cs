@@ -25,4 +25,16 @@ public class BoardManager : MonoBehaviour
 
         return groundTilemap.GetCellCenterWorld(tilePosition);
     }
+
+
+    public bool TryGetBoardPosition(Vector3 worldPosition, out int x, out int y)
+    {
+        Vector3Int tilePosition = groundTilemap.WorldToCell(worldPosition);
+
+        x = tilePosition.x - _origin.x;
+        y = tilePosition.y - _origin.y;
+
+        return IsInsideBoard(x, y);
+    }
+
 }

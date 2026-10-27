@@ -32,13 +32,15 @@ public class Board
     }
     public void InitializeBoard()
     {
-        SpawnPieceInRow(new WhiteKing(10), 0);
-        SpawnPieceInRow(new Queen(PieceColor.White, 5), 0);
+        SpawnPieceInRow(new WhiteKing(6), 0);
+        SpawnPieceInRow(new Knight(PieceColor.White, 4), 0);
         SpawnPieceInRow(new Bishop(PieceColor.White, 4), 0);
 
         SpawnPieceInRow(new Pawn(PieceColor.White, 3), 1);
         SpawnPieceInRow(new Pawn(PieceColor.White, 3), 1);
         SpawnPieceInRow(new Pawn(PieceColor.White, 3), 1);
+
+        PlacePiece(new BlackKing(1, 3), 4, 7);
     }
 
 
@@ -204,5 +206,16 @@ public class Board
             }
         }
         return copy;
+    }
+
+    public void ClearBoard()
+    {
+        for (int x = 0; x < Width; x++)
+        {
+            for (int y = 0; y < Height; y++)
+            {
+                ChessBoard[x, y].CurrentPiece = null;
+            }
+        }
     }
 }
