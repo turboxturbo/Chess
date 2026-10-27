@@ -1,14 +1,19 @@
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+
+
 public class PlayerInputController : MonoBehaviour
 {
+    public event Action PlayerMoveCompleted;
     private Board _board;
     private BoardManager _boardManager;
     private BoardView _boardView;
     private Camera _worldCamera;
     private PieceView _selectedPiece;
     private bool _isInitialized;
+    private bool _inputEnabled;
 
     public void Initialize(
         Board board,
@@ -27,6 +32,8 @@ public class PlayerInputController : MonoBehaviour
             _boardView != null &&
             _worldCamera != null;
 
+        _inputEnabled = _isInitialized;
+
         if (!_isInitialized)
         {
             Debug.LogError(
@@ -34,9 +41,16 @@ public class PlayerInputController : MonoBehaviour
         }
     }
 
+    public void SetInputEnabled(bool inputEnabled)
+    {
+        _inputEnabled = inputEnabled;
+    }
+
     private void Update()
     {
-        if (!_isInitialized || Mouse.current == null)
+        if (!_isInitialized ||
+            !_inputEnabled ||
+            Mouse.current == null)
         {
             return;
         }
@@ -109,20 +123,20 @@ public class PlayerInputController : MonoBehaviour
             toY,
             out ChessPiece capturedPiece);
 
-        if (moveSucceeded)
+        if (!moveSucceeded)
         {
-            _boardView.ApplyMove(
-                _selectedPiece,
-                toX,
-                toY,
-                capturedPiece);
-        }
-        else
-        {
-            _boardView.ReturnToCell(_selectedPiece);
+            ReturnSelectedPiece();
+            return;
         }
 
+        _boardView.ApplyMove(
+            _selectedPiece,
+            toX,
+            toY,
+            capturedPiece);
+
         _selectedPiece = null;
+        PlayerMoveCompleted?.Invoke();
     }
 
     private void ReturnSelectedPiece()

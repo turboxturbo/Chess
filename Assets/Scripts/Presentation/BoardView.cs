@@ -11,6 +11,7 @@ public class BoardView : MonoBehaviour
     [SerializeField] private PieceView _pawnPrefab;
     [SerializeField] private PieceView _rookPrefab;
     [SerializeField] private PieceView _queenPrefab;
+    private Board _board;
 
     private readonly Dictionary<ChessPiece, PieceView> _pieceViews = new();
 
@@ -22,6 +23,7 @@ public class BoardView : MonoBehaviour
             return;
         }
 
+        _board = board;
         CreatePieces(board);
     }
 
@@ -87,6 +89,32 @@ public class BoardView : MonoBehaviour
         }
 
         movingPieceView.SetBoardPosition(toX, toY, boardManager);
+    }
+
+        public void ApplyMove(Move move, ChessPiece capturedPiece)
+    {
+        if (_board == null)
+        {
+            return;
+        }
+
+        ChessPiece movingPiece =
+            _board.ChessBoard[move.ToX, move.ToY].CurrentPiece;
+
+        if (movingPiece == null ||
+            !_pieceViews.TryGetValue(
+                movingPiece,
+                out PieceView movingPieceView))
+        {
+            Debug.LogError("Moving PieceView was not found.");
+            return;
+        }
+
+        ApplyMove(
+            movingPieceView,
+            move.ToX,
+            move.ToY,
+            capturedPiece);
     }
     public void ReturnToCell(PieceView pieceView)
     {
