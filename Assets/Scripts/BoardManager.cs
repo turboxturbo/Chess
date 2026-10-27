@@ -3,20 +3,22 @@ using UnityEngine.Tilemaps;
 
 public class BoardManager : MonoBehaviour
 {
+    private const int BoardSize = 8;
+
     [SerializeField] private Tilemap groundTilemap;
 
-    private readonly Vector3Int _origin = new(-4, -5, 0);
-
+    private Vector3Int Origin => groundTilemap.origin;
 
     public Vector3Int GetTilePosition(int x, int y)
     {
-        return _origin + new Vector3Int(x, y, 0);
+        int reversedY = BoardSize - 1 - y;
+        return Origin + new Vector3Int(x, reversedY, 0);
     }
 
     public bool IsInsideBoard(int x, int y)
     {
-        return x >= 0 && x < 8 &&
-               y >= 0 && y < 8;
+        return x >= 0 && x < BoardSize &&
+               y >= 0 && y < BoardSize;
     }
 
     public Vector3 GetWorldPosition(int x, int y)
@@ -26,15 +28,14 @@ public class BoardManager : MonoBehaviour
         return groundTilemap.GetCellCenterWorld(tilePosition);
     }
 
-
     public bool TryGetBoardPosition(Vector3 worldPosition, out int x, out int y)
     {
         Vector3Int tilePosition = groundTilemap.WorldToCell(worldPosition);
 
-        x = tilePosition.x - _origin.x;
-        y = tilePosition.y - _origin.y;
+        x = tilePosition.x - Origin.x;
+        int tileY = tilePosition.y - Origin.y;
+        y = BoardSize - 1 - tileY;
 
         return IsInsideBoard(x, y);
     }
-
 }

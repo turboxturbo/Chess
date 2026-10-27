@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 6623485997986737228}
   - component: {fileID: 785505704396890679}
   - component: {fileID: 2994008335964301381}
+  - component: {fileID: -4797411822665595165}
   m_Layer: 0
   m_Name: king_black
   m_TagString: Untagged
@@ -128,3 +129,15 @@ CircleCollider2D:
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: -0.38142663}
   m_Radius: 0.31761998
+--- !u!114 &-4797411822665595165
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6219216387401229182}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1137802e84baa4080986ca0ad4b3ecf8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PieceView

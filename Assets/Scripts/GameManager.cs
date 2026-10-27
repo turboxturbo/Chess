@@ -6,21 +6,20 @@ public class GameManager : MonoBehaviour
     public Board Board;
     public int PiecesCount { get; private set; }
     public int WaveCount { get; private set; }
-    private void Awake()
+
+    public void Initialize()
     {
         if (Instance != null && Instance != this)
         {
-            Destroy(gameObject);
+            Debug.LogError("Another GameManager instance is already initialized.");
             return;
         }
 
         Instance = this;
         DontDestroyOnLoad(gameObject);
-    }
-    void Start()
-    {
         StartGame();
     }
+
     public void StartGame()
     {
         Board = new Board();
