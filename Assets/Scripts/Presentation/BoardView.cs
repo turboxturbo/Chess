@@ -116,6 +116,16 @@ public class BoardView : MonoBehaviour
             move.ToY,
             capturedPiece);
     }
+    public void ApplyShot(Dictionary<ChessPiece, int> damage)
+    {
+        foreach (var hit in damage)
+        {
+            if (hit.Key.Health != 0 || !_pieceViews.TryGetValue(hit.Key, out PieceView view)) continue;
+            _pieceViews.Remove(hit.Key);
+            Destroy(view.gameObject);
+        }
+    }
+
     public void ReturnToCell(PieceView pieceView)
     {
         pieceView.SetBoardPosition(pieceView.BoardX, pieceView.BoardY, boardManager);

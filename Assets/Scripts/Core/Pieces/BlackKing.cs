@@ -18,8 +18,4 @@ public class BlackKing : ChessPiece
         return dx <= 1 && dy <= 1 && (dx != 0 || dy != 0);
     }
 
-    public void Attack(ChessPiece target)
-    {
-        
-    }
 }

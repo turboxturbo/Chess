@@ -8,6 +8,13 @@ public abstract class ChessPiece
         Health = health;
     }
 
+    public bool TakeDamage(int damage)
+    {
+        if (damage < 0) throw new System.ArgumentOutOfRangeException(nameof(damage));
+        Health = System.Math.Max(0, Health - damage);
+        return Health == 0;
+    }
+
     public abstract bool CanMove(Board board, int fromX, int fromY, int toX, int toY);
 }
 
