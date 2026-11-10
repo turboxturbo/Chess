@@ -32,30 +32,42 @@ public class Board
     }
     public void InitializeBoard()
     {
-        SpawnPieceInRow(new WhiteKing(6), 0);
-        SpawnPieceInRow(new Knight(PieceColor.White, 4), 0);
-        SpawnPieceInRow(new Bishop(PieceColor.White, 4), 0);
-
-        SpawnPieceInRow(new Pawn(PieceColor.White, 3), 1);
-        SpawnPieceInRow(new Pawn(PieceColor.White, 3), 1);
-        SpawnPieceInRow(new Pawn(PieceColor.White, 3), 1);
-
         PlacePiece(new BlackKing(1, 3), 4, 7);
     }
 
-
-    public bool SpawnPieceInRow(ChessPiece piece, int row)
+    public bool SpawnWhitePiece(ChessPiece piece, out int spawnX, out int spawnY)
     {
-        if (!TryGetSpawnCell(row, row + 1,
-                1,
-                out int x,
-                out _))
-        {
+        if (!TryGetSpawnCell(0, 2, 1, out spawnX, out spawnY))
             return false;
-        }
 
-        PlacePiece(piece, x, row);
+        PlacePiece(piece, spawnX, spawnY);
         return true;
+    }
+
+    public void ResetBlackKing(int startX, int startY)
+    {
+        if (!TryFindPiece<BlackKing>(out int x, out int y)) return;
+        ChessPiece king = ChessBoard[x, y].CurrentPiece;
+        ChessBoard[x, y].CurrentPiece = null;
+        PlacePiece(king, startX, startY);
+    }
+
+    public ChessPiece PromotePawn(int x, int y, ChessPiece newPiece)
+    {
+        ChessPiece oldPawn = ChessBoard[x, y].CurrentPiece;
+        ChessBoard[x, y].CurrentPiece = newPiece;
+        return oldPawn;
+    }
+
+    public void ClearWhitePieces()
+    {
+        for (int x = 0; x < Width; x++)
+        for (int y = 0; y < Height; y++)
+        {
+            ChessPiece piece = ChessBoard[x, y].CurrentPiece;
+            if (piece != null && piece.Color == PieceColor.White)
+                ChessBoard[x, y].CurrentPiece = null;
+        }
     }
 
     public bool TryGetSpawnCell(int startRow, int endRow, int rowStep, out int spawnX, out int spawnY)

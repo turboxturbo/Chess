@@ -10,4 +10,5 @@ public class MoveEvaluationWeights
     public float ShotgunDangerWeight = 75f;
     public float KingCaptureRiskWeight = 80f;
     public float NearBestTolerance = 3f;
+    public float RecentlyMovedPenalty = 60f;
 }

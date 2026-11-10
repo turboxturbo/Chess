@@ -36,9 +36,12 @@ public sealed class ShotgunAttack
 
         var damage = new Dictionary<ChessPiece, int>();
         double aim = Math.Atan2(directionY, directionX);
+        double halfSpread = SpreadDegrees * Math.PI / 180 * 0.5;
+        double segmentSize = SpreadDegrees * Math.PI / 180 / PelletCount;
         for (int pellet = 0; pellet < PelletCount; pellet++)
         {
-            double angle = aim + (_random.NextDouble() - 0.5) * SpreadDegrees * Math.PI / 180;
+            double segmentStart = aim - halfSpread + pellet * segmentSize;
+            double angle = segmentStart + _random.NextDouble() * segmentSize;
             double dx = Math.Cos(angle), dy = Math.Sin(angle);
             double nearest = double.PositiveInfinity;
             ChessPiece target = null;

@@ -8,12 +8,14 @@ public class PlayerInputController : MonoBehaviour
 {
     public event Action PlayerMoveCompleted;
     [Header("Shotgun")]
-    [SerializeField, Min(1)] private int pelletCount = 8;
+    [SerializeField, Min(1)] private int pelletCount = 5;
     [SerializeField, Min(1)] private int pelletDamage = 1;
     [SerializeField, Range(0, 180)] private float spreadDegrees = 30f;
     [SerializeField, Min(0.1f)] private float shotgunRange = 5f;
     [Header("Ammo UI")]
     [SerializeField] private ShotgunAmmoView ammoView;
+    [Header("Piece Info")]
+    [SerializeField] private PieceInfoView pieceInfoView;
     private ShotgunAttack _shotgun;
     public ShotgunAmmo Ammo { get; private set; }
     private bool _isAiming;
@@ -82,9 +84,16 @@ public class PlayerInputController : MonoBehaviour
 
         if (Mouse.current.rightButton.wasPressedThisFrame)
         {
-            if (_selectedPiece != null) ReturnSelectedPiece();
-            _isAiming = !_isAiming;
-            if (!_isAiming) CancelAim();
+            if (!Ammo.IsLoaded)
+            {
+                CancelAim();
+            }
+            else
+            {
+                if (_selectedPiece != null) ReturnSelectedPiece();
+                _isAiming = !_isAiming;
+                if (!_isAiming) CancelAim();
+            }
         }
 
         if (_isAiming)
@@ -110,6 +119,27 @@ public class PlayerInputController : MonoBehaviour
         {
             TryReleasePiece();
         }
+
+        UpdatePieceInfo();
+    }
+
+    private void UpdatePieceInfo()
+    {
+        if (pieceInfoView == null) return;
+
+        Vector3 worldPosition = GetMouseWorldPosition();
+        Collider2D[] hits = Physics2D.OverlapPointAll(worldPosition);
+
+        foreach (Collider2D hit in hits)
+        {
+            PieceView pieceView = hit.GetComponentInParent<PieceView>();
+            if (pieceView == null || pieceView.Piece is BlackKing) continue;
+
+            pieceInfoView.Show(pieceView.Piece);
+            return;
+        }
+
+        pieceInfoView.Hide();
     }
 
     private void CancelAim()
@@ -170,8 +200,15 @@ public class PlayerInputController : MonoBehaviour
         }
         var damage = _shotgun.Fire(_board, x, y, direction.x, direction.y);
         _boardView.ApplyShot(damage);
+        bool whiteKingKilled = false;
         foreach (var hit in damage)
+        {
             Debug.Log($"Shotgun: {hit.Key.GetType().Name} took {hit.Value} damage, HP: {hit.Key.Health}");
+            if (hit.Key is WhiteKing && hit.Key.Health == 0)
+                whiteKingKilled = true;
+        }
+        if (whiteKingKilled)
+            GameManager.Instance.OnWhiteKingDefeated();
         CancelAim();
         PlayerMoveCompleted?.Invoke();
     }
@@ -248,6 +285,9 @@ public class PlayerInputController : MonoBehaviour
             toX,
             toY,
             capturedPiece);
+
+        if (capturedPiece is WhiteKing)
+            GameManager.Instance.OnWhiteKingDefeated();
 
         _selectedPiece = null;
         Ammo.OnKingMoved();

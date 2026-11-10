@@ -9,6 +9,7 @@ public class GameBootstrap : MonoBehaviour
     [SerializeField] private Camera worldCamera;
     private AIController _aiController;
     private bool _aiTurnInProgress;
+    private bool _skipAiTurn;
 
     private void Awake()
     {
@@ -27,8 +28,13 @@ public class GameBootstrap : MonoBehaviour
             return;
         }
 
+        gameManager.PieceSpawnRequested += boardView.SpawnPieceView;
+        gameManager.WaveCleared += OnWaveCleared;
+        gameManager.GameWon += OnGameWon;
+
         gameManager.Initialize();
         boardView.Initialize(gameManager.Board);
+        gameManager.StartFirstWave();
 
         playerInputController.Initialize(
             gameManager.Board,
@@ -41,11 +47,8 @@ public class GameBootstrap : MonoBehaviour
     public void InitializeAI()
     {
         MoveGenerator moveGenerator = new MoveGenerator();
-        MoveEvaluationWeights weights =
-            new MoveEvaluationWeights();
-
-        IShotgunThreatProvider threatProvider =
-            new NoShotgunThreatProvider();
+        MoveEvaluationWeights weights = new MoveEvaluationWeights();
+        IShotgunThreatProvider threatProvider = new NoShotgunThreatProvider();
 
         MoveEvaluator moveEvaluator = new MoveEvaluator(
             threatProvider,
@@ -58,42 +61,76 @@ public class GameBootstrap : MonoBehaviour
             weights);
 
         _aiController.MoveExecuted += boardView.ApplyMove;
-        playerInputController.PlayerMoveCompleted += MakeAITurn;
+        _aiController.PawnPromoted += boardView.ApplyPromotion;
+        playerInputController.PlayerMoveCompleted += StartAITurn;
     }
 
-     private void MakeAITurn()
+    private void StartAITurn()
     {
-        if (_aiController == null || _aiTurnInProgress)
+        if (_aiController == null || _aiTurnInProgress) return;
+
+        if (_skipAiTurn)
         {
+            _skipAiTurn = false;
             return;
         }
 
+        StartCoroutine(AITurnCoroutine());
+    }
+
+    private System.Collections.IEnumerator AITurnCoroutine()
+    {
         _aiTurnInProgress = true;
         playerInputController.SetInputEnabled(false);
 
-        bool blackKingCaptured =
-            _aiController.MakeTurn(gameManager.Board);
+        bool blackKingCaptured = _aiController.MakeTurn(gameManager.Board);
+
+        while (boardView.IsAnyPieceMoving())
+            yield return null;
 
         if (blackKingCaptured)
         {
             gameManager.GameOver();
-            return;
+            yield break;
         }
 
         playerInputController.SetInputEnabled(true);
         _aiTurnInProgress = false;
     }
 
-     private void OnDestroy()
+    private void OnWaveCleared()
+    {
+        _skipAiTurn = true;
+        boardView.ClearWhitePieces();
+        gameManager.Board.ClearWhitePieces();
+        gameManager.Board.ResetBlackKing(4, 7);
+        boardView.ResetBlackKingView(4, 7);
+        playerInputController.Ammo.Reset();
+    }
+
+    private void OnGameWon()
+    {
+        Debug.Log("You survived all 10 waves!");
+        playerInputController.SetInputEnabled(false);
+        Time.timeScale = 0;
+    }
+
+    private void OnDestroy()
     {
         if (_aiController != null)
         {
             _aiController.MoveExecuted -= boardView.ApplyMove;
+            _aiController.PawnPromoted -= boardView.ApplyPromotion;
         }
 
         if (playerInputController != null)
+            playerInputController.PlayerMoveCompleted -= StartAITurn;
+
+        if (gameManager != null)
         {
-            playerInputController.PlayerMoveCompleted -= MakeAITurn;
+            gameManager.PieceSpawnRequested -= boardView.SpawnPieceView;
+            gameManager.WaveCleared -= OnWaveCleared;
+            gameManager.GameWon -= OnGameWon;
         }
     }
 }

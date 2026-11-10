@@ -127,8 +127,8 @@ CircleCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: -0.23730952}
-  m_Radius: 0.30975908
+  m_Offset: {x: 0, y: -0.17233449}
+  m_Radius: 0.24478406
 --- !u!114 &7282963861934608493
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -141,3 +141,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1137802e84baa4080986ca0ad4b3ecf8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PieceView
+  moveSpeed: 12

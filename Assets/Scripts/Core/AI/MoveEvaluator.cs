@@ -14,7 +14,7 @@ public class MoveEvaluator
         _weights = weights;
     }
 
-    public float Evaluate(Board board, Move move)
+    public float Evaluate(Board board, Move move, ChessPiece lastMovedPiece = null)
     {
         if (!board.IsLegalMove(move.FromX, move.FromY, move.ToX, move.ToY))
         {
@@ -47,8 +47,9 @@ public class MoveEvaluator
         float positionScore = EvaluatePosition(simulatedBoard, movingPiece, move.ToX, move.ToY, kingX, kingY);
         float safetyScore = EvaluateSafety(simulatedBoard, movingPiece, move.ToX, move.ToY, kingX, kingY);
         float cooperationScore = EvaluateCooperation(simulatedBoard, mobilityBefore);
+        float recentPenalty = movingPiece == lastMovedPiece ? -_weights.RecentlyMovedPenalty : 0f;
 
-        return attackScore + positionScore + safetyScore + cooperationScore;
+        return attackScore + positionScore + safetyScore + cooperationScore + recentPenalty;
     }
 
     private float EvaluateAttack(Board board, ChessPiece movingPiece, int pieceX, int pieceY, int kingX, int kingY)

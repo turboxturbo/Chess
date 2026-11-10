@@ -31,8 +31,13 @@ public sealed class ShotgunAmmo
 
     public void OnKingMoved()
     {
-        // Replenish the reserve first, then transfer a shell to an empty chamber.
         Reserve = Math.Min(ReserveCapacity, Reserve + 1);
         TryReload();
+    }
+
+    public void Reset()
+    {
+        Reserve = ReserveCapacity;
+        IsLoaded = true;
     }
 }

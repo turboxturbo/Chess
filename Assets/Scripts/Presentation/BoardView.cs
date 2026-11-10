@@ -91,38 +91,105 @@ public class BoardView : MonoBehaviour
         movingPieceView.SetBoardPosition(toX, toY, boardManager);
     }
 
-        public void ApplyMove(Move move, ChessPiece capturedPiece)
+    public void ApplyMove(Move move, ChessPiece capturedPiece)
     {
-        if (_board == null)
-        {
-            return;
-        }
+        if (_board == null) return;
 
-        ChessPiece movingPiece =
-            _board.ChessBoard[move.ToX, move.ToY].CurrentPiece;
+        ChessPiece movingPiece = _board.ChessBoard[move.ToX, move.ToY].CurrentPiece;
 
         if (movingPiece == null ||
-            !_pieceViews.TryGetValue(
-                movingPiece,
-                out PieceView movingPieceView))
+            !_pieceViews.TryGetValue(movingPiece, out PieceView movingPieceView))
         {
             Debug.LogError("Moving PieceView was not found.");
             return;
         }
 
-        ApplyMove(
-            movingPieceView,
-            move.ToX,
-            move.ToY,
-            capturedPiece);
+        if (capturedPiece != null && _pieceViews.TryGetValue(capturedPiece, out PieceView capturedView))
+        {
+            _pieceViews.Remove(capturedPiece);
+            Destroy(capturedView.gameObject);
+        }
+
+        movingPieceView.AnimateTo(move.ToX, move.ToY, boardManager);
     }
+
+    public bool IsAnyPieceMoving()
+    {
+        foreach (var kv in _pieceViews)
+        {
+            if (kv.Value != null && kv.Value.IsMoving) return true;
+        }
+        return false;
+    }
+    [SerializeField] private GameObject damagePopupPrefab;
+
     public void ApplyShot(Dictionary<ChessPiece, int> damage)
     {
         foreach (var hit in damage)
         {
-            if (hit.Key.Health != 0 || !_pieceViews.TryGetValue(hit.Key, out PieceView view)) continue;
-            _pieceViews.Remove(hit.Key);
-            Destroy(view.gameObject);
+            if (!_pieceViews.TryGetValue(hit.Key, out PieceView view)) continue;
+
+            if (hit.Key.Health == 0)
+            {
+                _pieceViews.Remove(hit.Key);
+                Destroy(view.gameObject);
+            }
+            else
+            {
+                view.ShowHitEffect(hit.Value, damagePopupPrefab);
+            }
+        }
+    }
+
+    public void SpawnPieceView(ChessPiece piece, int x, int y)
+    {
+        PieceView prefab = GetPrefab(piece);
+        if (prefab == null)
+        {
+            Debug.LogError($"Prefab not found for {piece.GetType().Name}");
+            return;
+        }
+
+        PieceView pieceView = Instantiate(prefab, transform);
+        pieceView.Initialize(x, y, piece, boardManager);
+        Register(pieceView);
+    }
+
+    public void ClearWhitePieces()
+    {
+        var toRemove = new System.Collections.Generic.List<ChessPiece>();
+        foreach (var kv in _pieceViews)
+        {
+            if (kv.Key.Color == PieceColor.White)
+                toRemove.Add(kv.Key);
+        }
+        foreach (var piece in toRemove)
+        {
+            DestroyImmediate(_pieceViews[piece].gameObject);
+            _pieceViews.Remove(piece);
+        }
+    }
+
+    public void ApplyPromotion(ChessPiece oldPawn, ChessPiece newPiece, int x, int y)
+    {
+        if (_pieceViews.TryGetValue(oldPawn, out PieceView pawnView))
+        {
+            _pieceViews.Remove(oldPawn);
+            Destroy(pawnView.gameObject);
+        }
+
+        SpawnPieceView(newPiece, x, y);
+    }
+
+    public void ResetBlackKingView(int x, int y)
+    {
+        foreach (var kv in _pieceViews)
+        {
+            if (kv.Key is BlackKing)
+            {
+                kv.Value.SetBoardPosition(x, y, boardManager);
+                return;
+            }
         }
     }
 
