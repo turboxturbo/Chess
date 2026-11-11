@@ -14,9 +14,9 @@ public class UserController : Controller
         _userI = userI;
     }
 
-    [HttpGet]
+    [HttpPost]
     [Route("[action]")]
-    public async Task<IActionResult> Auth(AuthReq  request)
+    public async Task<IActionResult> Auth([FromBody] AuthReq request)
     {
         return await _userI.Auth(request);
     }

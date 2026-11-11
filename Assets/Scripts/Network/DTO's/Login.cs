@@ -8,6 +8,6 @@ public class LoginRequest
 [System.Serializable]
 public class LoginAnswer
 {
-    public bool Status;
+    public bool status;
 }
 

@@ -6,8 +6,7 @@ public class DamagePopup : MonoBehaviour
 {
     [SerializeField] private TextMeshPro text;
     [SerializeField] private float lifetime = 1f;
-    [SerializeField] private float offsetY = 0.4f;
-    [SerializeField] private float shakeStrength = 0.02f;
+[SerializeField] private float shakeStrength = 0.02f;
     [SerializeField] private float shakeSpeed = 20f;
 
     private Transform _follow;

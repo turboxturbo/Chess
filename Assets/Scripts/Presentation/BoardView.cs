@@ -16,6 +16,11 @@ public class BoardView : MonoBehaviour
     [SerializeField] private float dropDelay = 0.1f;
     [SerializeField] private float blackKingDropDelay = 1.2f;
 
+    [Header("Land Sound")]
+    [SerializeField] private AudioSource landAudioSource;
+    [SerializeField] private AudioClip landClip;
+    [SerializeField, Range(0.8f, 1.2f)] private float landPitchVariance = 0.1f;
+
     private int _spawnIndex;
     private Board _board;
 
@@ -36,11 +41,18 @@ public class BoardView : MonoBehaviour
     public void Register(PieceView pieceView)
     {
         if (pieceView == null || pieceView.Piece == null)
-        {
             return;
-        }
 
         _pieceViews[pieceView.Piece] = pieceView;
+
+        if (landClip != null && landAudioSource != null)
+            pieceView.Landed += () => PlayLandSound();
+    }
+
+    private void PlayLandSound()
+    {
+        landAudioSource.pitch = 1f + UnityEngine.Random.Range(-landPitchVariance, landPitchVariance);
+        landAudioSource.PlayOneShot(landClip);
     }
 
     private PieceView GetPrefab(ChessPiece piece)

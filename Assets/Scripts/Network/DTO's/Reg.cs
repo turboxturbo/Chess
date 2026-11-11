@@ -10,5 +10,6 @@ public class RegRequest
 [System.Serializable]
 public class RegAnswer
 {
-    public bool Status;
+    public bool status;
+    public string message;
 }

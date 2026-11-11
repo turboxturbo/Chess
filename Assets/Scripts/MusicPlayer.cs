@@ -4,8 +4,7 @@ public class MusicPlayer : MonoBehaviour
 {
     [SerializeField] private AudioSource audioSource;
     [SerializeField] private AudioClip[] tracks;
-    [SerializeField] private float fadeSpeed = 1f;
-    [Range(0f, 1f)]
+[Range(0f, 1f)]
     [SerializeField] private float volume = 0.5f;
 
     private int _currentTrack;

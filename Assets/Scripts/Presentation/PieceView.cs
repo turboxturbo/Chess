@@ -17,6 +17,7 @@ public class PieceView : MonoBehaviour
 
     private Coroutine _moveCoroutine;
     private Coroutine _flashCoroutine;
+    private bool _isDropping;
 
     private void Awake()
     {
@@ -48,6 +49,7 @@ public class PieceView : MonoBehaviour
         BoardY = y;
         Vector3 target = boardManager.GetWorldPosition(x, y);
         transform.position = target + Vector3.up * dropHeight;
+        _isDropping = true;
         if (_moveCoroutine != null) StopCoroutine(_moveCoroutine);
         _moveCoroutine = StartCoroutine(DropCoroutine(target, delay));
     }
@@ -63,13 +65,21 @@ public class PieceView : MonoBehaviour
         }
         transform.position = target;
         IsMoving = false;
+        if (_isDropping)
+        {
+            _isDropping = false;
+            Landed?.Invoke();
+        }
     }
+
+    public event Action Landed;
 
     public void AnimateTo(int x, int y, BoardManager boardManager, Action onComplete = null)
     {
         BoardX = x;
         BoardY = y;
         Vector3 target = boardManager.GetWorldPosition(x, y);
+        _isDropping = false;
         if (_moveCoroutine != null) StopCoroutine(_moveCoroutine);
         _moveCoroutine = StartCoroutine(MoveCoroutine(target, onComplete));
     }
@@ -87,6 +97,7 @@ public class PieceView : MonoBehaviour
         }
         transform.position = target;
         IsMoving = false;
+        Landed?.Invoke();
         onComplete?.Invoke();
     }
 

@@ -2753,6 +2753,9 @@ MonoBehaviour:
   dropHeight: 8
   dropDelay: 0.2
   blackKingDropDelay: 1
+  landAudioSource: {fileID: 1386279610}
+  landClip: {fileID: 8300000, guid: fdf30bb59c8594e28b0a60ebcf9f3b7a, type: 3}
+  landPitchVariance: 0.1
   damagePopupPrefab: {fileID: 1170642043323285624, guid: 5a24ecfd95cbf4627a9bc87eb0d3dfaa, type: 3}
 --- !u!4 &1280072095
 Transform:
@@ -2996,7 +2999,6 @@ MonoBehaviour:
   audioSource: {fileID: 1386279610}
   tracks:
   - {fileID: 8300000, guid: 65fe3517cc8344392ba78c1d0fe5b23d, type: 3}
-  fadeSpeed: 1
   volume: 0.5
 --- !u!4 &1386279612
 Transform:

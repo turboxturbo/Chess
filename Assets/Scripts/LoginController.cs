@@ -19,6 +19,14 @@ public class LoginController : MonoBehaviour
     [SerializeField] private AudioSource transitionAudioSource;
     [SerializeField] private AudioClip transitionClip;
 
+    [Header("Sans Trick")]
+    [SerializeField] private DialogueTyper dialogueTyper;
+    [SerializeField, TextArea(2, 5)] private string trickText = "* heh.\n* you really thought it'd be that easy?";
+    [SerializeField, TextArea(2, 5)] private string secondText = "* ...ok fine. go ahead.";
+    [SerializeField] private Vector2 trickButtonPosition = new Vector2(-584.4999f, 297.5f);
+
+    private bool _tricked;
+
     private void Start()
     {
         loginButton.onClick.AddListener(OnLoginButtonClicked);
@@ -29,6 +37,12 @@ public class LoginController : MonoBehaviour
 
     private void OnLoginButtonClicked()
     {
+        if (_tricked)
+        {
+            StartCoroutine(FadeToWhiteAndLoad());
+            return;
+        }
+
         string username = usernameField.text.Trim();
         string password = passwordField.text.Trim();
 
@@ -40,16 +54,44 @@ public class LoginController : MonoBehaviour
 
     private IEnumerator LoginCoroutine(string username, string password)
     {
+        loginButton.interactable = false;
+
         LoginAnswer answer = null;
 
         yield return ApiRequest.LoginCoroutine(
             result => answer = result,
             new LoginRequest { Username = username, Password = password });
 
-        if (answer != null && answer.Status)
-            yield return FadeToWhiteAndLoad();
+        if (answer != null && answer.status)
+        {
+            TeleportButton();
+            if (dialogueTyper != null)
+            {
+                dialogueTyper.Play(trickText);
+                dialogueTyper.TypewriterFinished += OnTrickTextFinished;
+            }
+            _tricked = true;
+        }
         else
-            Debug.LogWarning("Login failed.");
+        {
+            usernameField.text = "";
+            passwordField.text = "";
+            usernameField.placeholder.GetComponent<TMP_Text>().text = "Неверный логин или пароль";
+            passwordField.placeholder.GetComponent<TMP_Text>().text = "Неверный логин или пароль";
+        }
+
+        loginButton.interactable = true;
+    }
+
+    private void OnTrickTextFinished()
+    {
+        dialogueTyper.TypewriterFinished -= OnTrickTextFinished;
+        dialogueTyper?.Play(secondText);
+    }
+
+    private void TeleportButton()
+    {
+        loginButton.GetComponent<RectTransform>().anchoredPosition = trickButtonPosition;
     }
 
     private IEnumerator FadeToWhiteAndLoad()
@@ -57,7 +99,11 @@ public class LoginController : MonoBehaviour
         loginButton.interactable = false;
 
         if (transitionClip != null && transitionAudioSource != null)
-            transitionAudioSource.PlayOneShot(transitionClip);
+        {
+            transitionAudioSource.pitch = transitionClip.length / fadeDuration;
+            transitionAudioSource.clip = transitionClip;
+            transitionAudioSource.Play();
+        }
 
         float elapsed = 0f;
         while (elapsed < fadeDuration)

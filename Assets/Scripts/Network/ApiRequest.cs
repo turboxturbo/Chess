@@ -10,7 +10,7 @@ public class AcceptAllCertificates : CertificateHandler
 
 public static class ApiRequest
 {
-    private static string _baseUrl = "http://localhost:5095/api/";
+    private static string _baseUrl = "https://localhost:7206/api/";
     public static void Login(Action<LoginAnswer> callback, LoginRequest login)
     {
         GameManager.Instance.StartCoroutine(LoginCoroutine(callback, login));
@@ -34,52 +34,44 @@ public static class ApiRequest
     public static IEnumerator LoginCoroutine(Action<LoginAnswer> callback, LoginRequest login)
     {
         string jsonData = JsonUtility.ToJson(login);
-        Debug.Log(jsonData);
-        byte[] bodyRow = System.Text.Encoding.UTF8.GetBytes(jsonData);
-        using (UnityWebRequest request = new UnityWebRequest(_baseUrl + "MotoristCotroller/auth", "POST"))
+        Debug.Log($"Login request: {jsonData}");
+        byte[] bodyRaw = System.Text.Encoding.UTF8.GetBytes(jsonData);
+        using UnityWebRequest request = new UnityWebRequest(_baseUrl + "User/Auth", "POST");
+        request.uploadHandler = new UploadHandlerRaw(bodyRaw);
+        request.downloadHandler = new DownloadHandlerBuffer();
+        request.certificateHandler = new AcceptAllCertificates();
+        request.SetRequestHeader("Content-Type", "application/json");
+        yield return request.SendWebRequest();
+        if (request.result == UnityWebRequest.Result.Success)
         {
-            request.uploadHandler = new UploadHandlerRaw(bodyRow);
-            request.downloadHandler = new DownloadHandlerBuffer();
-            request.certificateHandler = new AcceptAllCertificates();
-            request.SetRequestHeader("Content-Type", "application/json");
-            yield return request.SendWebRequest();
-            if (request.result == UnityWebRequest.Result.Success) //толькой 200, поэтому в Api используем только OkObjectResult. Остальные выдают ошибку
-            {
-                string jsonResponse = request.downloadHandler.text;
-                LoginAnswer answer = JsonUtility.FromJson<LoginAnswer>(jsonResponse);
-                Debug.Log(answer);
-                callback?.Invoke(answer);
-            }
-            else
-            {
-                Debug.Log(request.error);
-            }
+            Debug.Log($"Login response: {request.downloadHandler.text}");
+            callback?.Invoke(JsonUtility.FromJson<LoginAnswer>(request.downloadHandler.text));
+        }
+        else
+        {
+            Debug.LogError($"Login error: {request.error} | {request.downloadHandler.text}");
+            callback?.Invoke(null);
         }
     }
 
-    public static IEnumerator RegCoroutine(Action<RegAnswer> callback, RegRequest login)
+    public static IEnumerator RegCoroutine(Action<RegAnswer> callback, RegRequest reg)
     {
-        string jsonData = JsonUtility.ToJson(login);
-        Debug.Log(jsonData);
-        byte[] bodyRow = System.Text.Encoding.UTF8.GetBytes(jsonData);
-        using (UnityWebRequest request = new UnityWebRequest(_baseUrl + "MotoristCotroller/auth", "POST"))
+        string jsonData = JsonUtility.ToJson(reg);
+        byte[] bodyRaw = System.Text.Encoding.UTF8.GetBytes(jsonData);
+        using UnityWebRequest request = new UnityWebRequest(_baseUrl + "User/Reg", "POST");
+        request.uploadHandler = new UploadHandlerRaw(bodyRaw);
+        request.downloadHandler = new DownloadHandlerBuffer();
+        request.certificateHandler = new AcceptAllCertificates();
+        request.SetRequestHeader("Content-Type", "application/json");
+        yield return request.SendWebRequest();
+        if (request.result == UnityWebRequest.Result.Success)
         {
-            request.uploadHandler = new UploadHandlerRaw(bodyRow);
-            request.downloadHandler = new DownloadHandlerBuffer();
-            request.certificateHandler = new AcceptAllCertificates();
-            request.SetRequestHeader("Content-Type", "application/json");
-            yield return request.SendWebRequest();
-            if (request.result == UnityWebRequest.Result.Success) //толькой 200, поэтому в Api используем только OkObjectResult. Остальные выдают ошибку
-            {
-                string jsonResponse = request.downloadHandler.text;
-                RegAnswer answer = JsonUtility.FromJson<RegAnswer>(jsonResponse);
-                Debug.Log(answer);
-                callback?.Invoke(answer);
-            }
-            else
-            {
-                Debug.Log(request.error);
-            }
+            callback?.Invoke(JsonUtility.FromJson<RegAnswer>(request.downloadHandler.text));
+        }
+        else
+        {
+            Debug.LogError($"Reg error: {request.error}");
+            callback?.Invoke(null);
         }
     }
 
@@ -93,6 +85,7 @@ public static class ApiRequest
         using UnityWebRequest request = new UnityWebRequest(_baseUrl + "Game/StartGame", "POST");
         request.uploadHandler = new UploadHandlerRaw(bodyRaw);
         request.downloadHandler = new DownloadHandlerBuffer();
+        request.certificateHandler = new AcceptAllCertificates();
         request.SetRequestHeader("Content-Type", "application/json");
 
         yield return request.SendWebRequest();
@@ -113,6 +106,7 @@ public static class ApiRequest
         using UnityWebRequest request = new UnityWebRequest(_baseUrl + "Game/Endgame", "PUT");
         request.uploadHandler = new UploadHandlerRaw(bodyRaw);
         request.downloadHandler = new DownloadHandlerBuffer();
+        request.certificateHandler = new AcceptAllCertificates();
         request.SetRequestHeader("Content-Type", "application/json");
 
         yield return request.SendWebRequest();
