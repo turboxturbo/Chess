@@ -15,7 +15,9 @@ public class BlackKing : ChessPiece
         int dx = Math.Abs(toX - fromX);
         int dy = Math.Abs(toY - fromY);
 
-        return dx <= 1 && dy <= 1 && (dx != 0 || dy != 0);
+        return board.ChessBoard[toX, toY].IsEmpty &&
+               dx <= 1 && dy <= 1 &&
+               (dx != 0 || dy != 0);
     }
 
 }

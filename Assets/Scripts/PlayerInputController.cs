@@ -239,6 +239,10 @@ public class PlayerInputController : MonoBehaviour
             }
 
             _selectedPiece = pieceView;
+            _boardManager.ShowLegalMoves(
+                _board,
+                _selectedPiece.BoardX,
+                _selectedPiece.BoardY);
             return;
         }
     }
@@ -280,6 +284,8 @@ public class PlayerInputController : MonoBehaviour
             return;
         }
 
+        _boardManager.ClearMoveHighlights();
+
         _boardView.ApplyMove(
             _selectedPiece,
             toX,
@@ -298,6 +304,7 @@ public class PlayerInputController : MonoBehaviour
     {
         _boardView.ReturnToCell(_selectedPiece);
         _selectedPiece = null;
+        _boardManager.ClearMoveHighlights();
     }
 
     private Vector3 GetMouseWorldPosition()

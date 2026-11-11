@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -6,8 +7,30 @@ public class BoardManager : MonoBehaviour
     private const int BoardSize = 8;
 
     [SerializeField] private Tilemap groundTilemap;
+    [SerializeField] private Tilemap effectsTilemap;
+    [SerializeField] private TileBase moveHighlightTile;
+    [SerializeField, Min(0.1f)] private float highlightPulseDuration = 1f;
+    [SerializeField, Range(0f, 1f)] private float minimumHighlightOpacity = 0.5f;
+    [SerializeField, Range(0f, 1f)] private float maximumHighlightOpacity = 1f;
+
+    private readonly HashSet<Vector3Int> _highlightedTiles = new();
 
     private Vector3Int Origin => groundTilemap.origin;
+
+    private void Update()
+    {
+        if (effectsTilemap == null || _highlightedTiles.Count == 0)
+        {
+            return;
+        }
+
+        float pulse = (Mathf.Sin(Time.time * Mathf.PI * 2f / highlightPulseDuration) + 1f) * 0.5f;
+        float opacity = Mathf.Lerp(
+            Mathf.Min(minimumHighlightOpacity, maximumHighlightOpacity),
+            Mathf.Max(minimumHighlightOpacity, maximumHighlightOpacity),
+            pulse);
+        effectsTilemap.color = new Color(1f, 1f, 1f, opacity);
+    }
 
     public Vector3Int GetTilePosition(int x, int y)
     {
@@ -53,5 +76,47 @@ public class BoardManager : MonoBehaviour
         y = BoardSize - 1 - tileY;
 
         return IsInsideBoard(x, y);
+    }
+
+    public void ShowLegalMoves(Board board, int fromX, int fromY)
+    {
+        ClearMoveHighlights();
+
+        if (board == null || effectsTilemap == null || moveHighlightTile == null)
+        {
+            return;
+        }
+
+        for (int x = 0; x < BoardSize; x++)
+        {
+            for (int y = 0; y < BoardSize; y++)
+            {
+                if (!board.IsLegalMove(fromX, fromY, x, y))
+                {
+                    continue;
+                }
+
+                Vector3Int tilePosition = GetTilePosition(x, y);
+                effectsTilemap.SetTile(tilePosition, moveHighlightTile);
+                _highlightedTiles.Add(tilePosition);
+            }
+        }
+    }
+
+    public void ClearMoveHighlights()
+    {
+        if (effectsTilemap == null)
+        {
+            _highlightedTiles.Clear();
+            return;
+        }
+
+        foreach (Vector3Int tilePosition in _highlightedTiles)
+        {
+            effectsTilemap.SetTile(tilePosition, null);
+        }
+
+        _highlightedTiles.Clear();
+        effectsTilemap.color = Color.white;
     }
 }

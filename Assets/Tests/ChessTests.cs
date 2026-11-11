@@ -29,6 +29,22 @@ public class ChessTests
         Assert.IsNull(board.ChessBoard[3, 1].CurrentPiece);
     }
 
+    [Test]
+    public void BlackKing_CannotCaptureWhitePieceWithMove()
+    {
+        Board board = new Board();
+        BlackKing blackKing = new BlackKing(1, 3);
+        Pawn whitePawn = new Pawn(PieceColor.White, 3);
+        board.PlacePiece(blackKing, 4, 7);
+        board.PlacePiece(whitePawn, 4, 6);
+
+        bool moved = board.TryMovePiece(4, 7, 4, 6, out _);
+
+        Assert.IsFalse(moved);
+        Assert.AreEqual(blackKing, board.ChessBoard[4, 7].CurrentPiece);
+        Assert.AreEqual(whitePawn, board.ChessBoard[4, 6].CurrentPiece);
+    }
+
     // 3. ClearWhitePieces удаляет только белые фигуры
     [Test]
     public void Board_ClearWhitePieces_BlackKingRemains()
