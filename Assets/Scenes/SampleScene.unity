@@ -278,6 +278,7 @@ MonoBehaviour:
   boardView: {fileID: 1280072094}
   playerInputController: {fileID: 57338728}
   worldCamera: {fileID: 519420031}
+  userId: 1
 --- !u!4 &58095622
 Transform:
   m_ObjectHideFlags: 0
@@ -2125,7 +2126,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &808253293
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2749,6 +2750,9 @@ MonoBehaviour:
   _pawnPrefab: {fileID: 7282963861934608493, guid: 6fde603b65b45dc40a50b2d6d0c4815e, type: 3}
   _rookPrefab: {fileID: -5777935936508424602, guid: 1f43411048595fc40b77e7a13c0eedf0, type: 3}
   _queenPrefab: {fileID: 165810934207034037, guid: 7b07e4cb580781e488d7a34d04402330, type: 3}
+  dropHeight: 8
+  dropDelay: 0.2
+  blackKingDropDelay: 1
   damagePopupPrefab: {fileID: 1170642043323285624, guid: 5a24ecfd95cbf4627a9bc87eb0d3dfaa, type: 3}
 --- !u!4 &1280072095
 Transform:
@@ -2990,7 +2994,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MusicPlayer
   audioSource: {fileID: 1386279610}
-  tracks: []
+  tracks:
+  - {fileID: 8300000, guid: 65fe3517cc8344392ba78c1d0fe5b23d, type: 3}
   fadeSpeed: 1
   volume: 0.5
 --- !u!4 &1386279612

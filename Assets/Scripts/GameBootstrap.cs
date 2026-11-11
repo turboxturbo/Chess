@@ -7,9 +7,14 @@ public class GameBootstrap : MonoBehaviour
     [SerializeField] private BoardView boardView;
     [SerializeField] private PlayerInputController playerInputController;
     [SerializeField] private Camera worldCamera;
+    [SerializeField, Min(1)] private int userId = 1;
+
     private AIController _aiController;
     private bool _aiTurnInProgress;
     private bool _skipAiTurn;
+    private int _gameId;
+    private bool _gameFinished;
+    private bool _gameEndSent;
 
     private void Awake()
     {
@@ -31,6 +36,7 @@ public class GameBootstrap : MonoBehaviour
         gameManager.PieceSpawnRequested += boardView.SpawnPieceView;
         gameManager.WaveCleared += OnWaveCleared;
         gameManager.GameWon += OnGameWon;
+        gameManager.GameOverEvent += OnGameOver;
 
         gameManager.Initialize();
         boardView.Initialize(gameManager.Board);
@@ -42,6 +48,8 @@ public class GameBootstrap : MonoBehaviour
             boardView,
             worldCamera);
         InitializeAI();
+        CreateGameRecord();
+        StartCoroutine(WaitForDropsThenEnableInput());
     }
 
     public void InitializeAI()
@@ -101,18 +109,79 @@ public class GameBootstrap : MonoBehaviour
     private void OnWaveCleared()
     {
         _skipAiTurn = true;
+        boardView.ResetSpawnIndex();
         boardView.ClearWhitePieces();
         gameManager.Board.ClearWhitePieces();
         gameManager.Board.ResetBlackKing(4, 7);
         boardView.ResetBlackKingView(4, 7);
         playerInputController.Ammo.Reset();
+        playerInputController.SetInputEnabled(false);
+        StartCoroutine(WaitForDropsThenEnableInput());
+    }
+
+    private System.Collections.IEnumerator WaitForDropsThenEnableInput()
+    {
+        playerInputController.SetInputEnabled(false);
+        yield return null; // ждём кадр чтобы SpawnWave успел выполниться
+        while (boardView.IsAnyPieceMoving())
+            yield return null;
+        playerInputController.SetInputEnabled(true);
     }
 
     private void OnGameWon()
     {
         Debug.Log("You survived all 10 waves!");
+        FinishGameRecord();
         playerInputController.SetInputEnabled(false);
         Time.timeScale = 0;
+    }
+
+    private void OnGameOver()
+    {
+        FinishGameRecord();
+    }
+
+    private void CreateGameRecord()
+    {
+        ApiRequest.StartGame(OnGameCreated, new GameStartRequest
+        {
+            IdUser = userId,
+            WavesCount = gameManager.WaveCount,
+            Status = true
+        });
+    }
+
+    private void OnGameCreated(GameStartAnswer answer)
+    {
+        if (answer == null || !answer.status || answer.data == null)
+        {
+            Debug.LogError("The API did not return a game ID.");
+            return;
+        }
+
+        _gameId = answer.data.idGame;
+
+        if (_gameFinished)
+        {
+            SendEndGameRequest();
+        }
+    }
+
+    private void FinishGameRecord()
+    {
+        _gameFinished = true;
+        SendEndGameRequest();
+    }
+
+    private void SendEndGameRequest()
+    {
+        if (_gameId <= 0 || _gameEndSent)
+        {
+            return;
+        }
+
+        _gameEndSent = true;
+        ApiRequest.EndGame(null, _gameId);
     }
 
     private void OnDestroy()
@@ -131,6 +200,7 @@ public class GameBootstrap : MonoBehaviour
             gameManager.PieceSpawnRequested -= boardView.SpawnPieceView;
             gameManager.WaveCleared -= OnWaveCleared;
             gameManager.GameWon -= OnGameWon;
+            gameManager.GameOverEvent -= OnGameOver;
         }
     }
 }

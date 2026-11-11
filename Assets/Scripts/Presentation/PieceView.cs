@@ -7,6 +7,7 @@ using UnityEngine;
 public class PieceView : MonoBehaviour
 {
     [SerializeField] private float moveSpeed = 12f;
+    [SerializeField] private float dropSpeed = 4f;
 
     public ChessPiece Piece { get; private set; }
     public int BoardX { get; private set; }
@@ -28,11 +29,40 @@ public class PieceView : MonoBehaviour
         SetBoardPosition(x, y, boardManager);
     }
 
+    public void InitializeDrop(int x, int y, ChessPiece piece, BoardManager boardManager, float delay, float dropHeight)
+    {
+        Piece = piece;
+        DropIn(x, y, boardManager, delay, dropHeight);
+    }
+
     public void SetBoardPosition(int x, int y, BoardManager boardManager)
     {
         BoardX = x;
         BoardY = y;
         transform.position = boardManager.GetWorldPosition(x, y);
+    }
+
+    public void DropIn(int x, int y, BoardManager boardManager, float delay, float dropHeight)
+    {
+        BoardX = x;
+        BoardY = y;
+        Vector3 target = boardManager.GetWorldPosition(x, y);
+        transform.position = target + Vector3.up * dropHeight;
+        if (_moveCoroutine != null) StopCoroutine(_moveCoroutine);
+        _moveCoroutine = StartCoroutine(DropCoroutine(target, delay));
+    }
+
+    private IEnumerator DropCoroutine(Vector3 target, float delay)
+    {
+        IsMoving = true;
+        if (delay > 0f) yield return new WaitForSeconds(delay);
+        while (Vector3.Distance(transform.position, target) > 0.001f)
+        {
+            transform.position = Vector3.MoveTowards(transform.position, target, dropSpeed * Time.deltaTime);
+            yield return null;
+        }
+        transform.position = target;
+        IsMoving = false;
     }
 
     public void AnimateTo(int x, int y, BoardManager boardManager, Action onComplete = null)

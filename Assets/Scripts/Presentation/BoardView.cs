@@ -11,6 +11,12 @@ public class BoardView : MonoBehaviour
     [SerializeField] private PieceView _pawnPrefab;
     [SerializeField] private PieceView _rookPrefab;
     [SerializeField] private PieceView _queenPrefab;
+    [Header("Drop Animation")]
+    [SerializeField] private float dropHeight = 8f;
+    [SerializeField] private float dropDelay = 0.1f;
+    [SerializeField] private float blackKingDropDelay = 1.2f;
+
+    private int _spawnIndex;
     private Board _board;
 
     private readonly Dictionary<ChessPiece, PieceView> _pieceViews = new();
@@ -74,7 +80,8 @@ public class BoardView : MonoBehaviour
                 }
 
                 PieceView pieceView = Instantiate(prefab, transform);
-                pieceView.Initialize(x, y, piece, boardManager);
+                float delay = piece is BlackKing ? blackKingDropDelay : 0f;
+                pieceView.InitializeDrop(x, y, piece, boardManager, delay, dropHeight);
                 Register(pieceView);
             }
         }
@@ -151,9 +158,12 @@ public class BoardView : MonoBehaviour
         }
 
         PieceView pieceView = Instantiate(prefab, transform);
-        pieceView.Initialize(x, y, piece, boardManager);
+        pieceView.InitializeDrop(x, y, piece, boardManager, _spawnIndex * dropDelay, dropHeight);
+        _spawnIndex++;
         Register(pieceView);
     }
+
+    public void ResetSpawnIndex() => _spawnIndex = 0;
 
     public void ClearWhitePieces()
     {
@@ -187,7 +197,7 @@ public class BoardView : MonoBehaviour
         {
             if (kv.Key is BlackKing)
             {
-                kv.Value.SetBoardPosition(x, y, boardManager);
+                kv.Value.DropIn(x, y, boardManager, blackKingDropDelay, dropHeight);
                 return;
             }
         }

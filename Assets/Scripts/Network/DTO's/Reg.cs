@@ -1,11 +1,14 @@
 
 
+[System.Serializable]
 public class RegRequest
 {
-    public string Username {get; set;}
-    public string Password {get; set;}
+    public string Username;
+    public string Password;
 }
+
+[System.Serializable]
 public class RegAnswer
 {
-    public bool Status {get; set;}
+    public bool Status;
 }

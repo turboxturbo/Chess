@@ -10,7 +10,7 @@ public class AcceptAllCertificates : CertificateHandler
 
 public static class ApiRequest
 {
-    private static string _baseUrl = "http://localhost:5171/api/";
+    private static string _baseUrl = "http://localhost:5095/api/";
     public static void Login(Action<LoginAnswer> callback, LoginRequest login)
     {
         GameManager.Instance.StartCoroutine(LoginCoroutine(callback, login));
@@ -19,6 +19,16 @@ public static class ApiRequest
     public static void Reg(Action<RegAnswer> callback, RegRequest login)
     {
         GameManager.Instance.StartCoroutine(RegCoroutine(callback, login));
+    }
+
+    public static void StartGame(Action<GameStartAnswer> callback, GameStartRequest game)
+    {
+        GameManager.Instance.StartCoroutine(StartGameCoroutine(callback, game));
+    }
+
+    public static void EndGame(Action<GameEndAnswer> callback, int gameId)
+    {
+        GameManager.Instance.StartCoroutine(EndGameCoroutine(callback, gameId));
     }
 
     public static IEnumerator LoginCoroutine(Action<LoginAnswer> callback, LoginRequest login)
@@ -71,6 +81,49 @@ public static class ApiRequest
                 Debug.Log(request.error);
             }
         }
+    }
+
+    private static IEnumerator StartGameCoroutine(
+        Action<GameStartAnswer> callback,
+        GameStartRequest game)
+    {
+        string jsonData = JsonUtility.ToJson(game);
+        byte[] bodyRaw = System.Text.Encoding.UTF8.GetBytes(jsonData);
+
+        using UnityWebRequest request = new UnityWebRequest(_baseUrl + "Game/StartGame", "POST");
+        request.uploadHandler = new UploadHandlerRaw(bodyRaw);
+        request.downloadHandler = new DownloadHandlerBuffer();
+        request.SetRequestHeader("Content-Type", "application/json");
+
+        yield return request.SendWebRequest();
+
+        if (request.result != UnityWebRequest.Result.Success)
+        {
+            Debug.LogError($"Unable to create game: {request.error}");
+            yield break;
+        }
+
+        callback?.Invoke(JsonUtility.FromJson<GameStartAnswer>(request.downloadHandler.text));
+    }
+
+    private static IEnumerator EndGameCoroutine(Action<GameEndAnswer> callback, int gameId)
+    {
+        byte[] bodyRaw = System.Text.Encoding.UTF8.GetBytes(gameId.ToString());
+
+        using UnityWebRequest request = new UnityWebRequest(_baseUrl + "Game/Endgame", "PUT");
+        request.uploadHandler = new UploadHandlerRaw(bodyRaw);
+        request.downloadHandler = new DownloadHandlerBuffer();
+        request.SetRequestHeader("Content-Type", "application/json");
+
+        yield return request.SendWebRequest();
+
+        if (request.result != UnityWebRequest.Result.Success)
+        {
+            Debug.LogError($"Unable to end game: {request.error}");
+            yield break;
+        }
+
+        callback?.Invoke(JsonUtility.FromJson<GameEndAnswer>(request.downloadHandler.text));
     }
 }
 
