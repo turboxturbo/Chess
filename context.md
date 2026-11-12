@@ -6,7 +6,7 @@ Unity 6000.3.9f1, доска 8×8, игрок управляет чёрным к
 
 - Core: логическая доска, правила перемещения, здоровье фигур (HP + MaxHealth) и ИИ.
 - Presentation: BoardView и PieceView создают и перемещают отображения фигур с плавной анимацией (MoveTowards). Отдельные корутины для движения и флэша.
-- PlayerInputController: перетаскивание короля, прицеливание дробовика, hover-детекция для PieceInfoView.
+- PlayerInputController: перетаскивание короля, прицеливание дробовика, hover-детекция для PieceInfoView, тряска фигур в конусе прицела.
 - GameBootstrap: после действия игрока ИИ делает до двух ходов (корутина, ждёт окончания анимации); взятие чёрного короля завершает игру.
 - GameManager: singleton, управляет волнами (1–10), событиями GameWon/GameOverEvent/WaveCleared/PieceSpawnRequested. DontDestroyOnLoad убран — при рестарте старый instance уничтожается.
 - WaveView: отображает номер текущей волны (TextMeshPro, только цифра).
@@ -16,6 +16,7 @@ Unity 6000.3.9f1, доска 8×8, игрок управляет чёрным к
 - ShotgunAmmoView: отображает патронник и запас через UI Image.
 - DamagePopup: при попадании дробины появляется число урона (3D TextMeshPro) слева сверху фигуры, следует за ней во время движения, тряска (shakeStrength=0.02, shakeSpeed=20), lifetime настраивается в Inspector.
 - PieceView.ShowHitEffect: флэш цветом #D20114 на 0.25 сек при попадании.
+- PieceView.StartAimShake/StopAimShake: тряска фигуры в стиле DialogueTyper (Random.insideUnitCircle) при наведении конуса дробовика.
 
 ## Дробовик
 
@@ -24,6 +25,10 @@ Unity 6000.3.9f1, доска 8×8, игрок управляет чёрным к
 - Параметры на PlayerInputController в Inspector: 5 дробин, 1 HP за дробину, полный угол 30°, дальность 5 клеток.
 - Дробины равномерно распределены по конусу (стратифицированная выборка) — фигура на краю конуса получит максимум 1 дробину.
 - Каждая дробина останавливается на первой фигуре. Весь урон применяется после расчёта попаданий.
+- ShotgunAttack.Fire() возвращает кортеж (damage, pellets) — List<PelletResult> с EndX/EndY/HitPiece для каждой дробины.
+- При выстреле спавнятся визуальные дробинки (префаб назначается в Inspector), летят до цели или края дальности.
+- SFX выстрела: AudioSource.PlayClipAtPoint, параметры Shot Clip и Shot Volume на PlayerInputController.
+- При наведении конуса на фигуру — тряска через Physics2D.OverlapCircleAll + проверка угла.
 - Погибшие фигуры удаляются из доски и отображения, выстрел передаёт ход ИИ.
 
 ## Боезапас
@@ -31,6 +36,12 @@ Unity 6000.3.9f1, доска 8×8, игрок управляет чёрным к
 - ShotgunAmmo: патронник на 1 патрон и отдельный запас до 5. Начало партии и каждой волны: 1 + 5.
 - Выстрел расходует только патронник. Попытка прицелиться с пустым патронником заблокирована.
 - Успешное перемещение короля добавляет 1 в запас (до 5), затем заряжает пустой патронник из запаса.
+
+## Аудио
+
+- MusicPlayer на SampleScene: воспроизводит треки по очереди (loop=false, переход по окончанию).
+- BoardView: отдельный AudioSource создаётся через AddComponent в Initialize() — не связан с музыкальным. Звук приземления фигур с pitch variance.
+- LoginController: pitch перехода = transitionClip.length / fadeDuration.
 
 ## Волновая система
 
@@ -54,11 +65,20 @@ Unity 6000.3.9f1, доска 8×8, игрок управляет чёрным к
 - Пешка достигает ряда 7 → промоция: Knight если ≤2 клетки до чёрного короля, иначе Queen.
 - NoShotgunThreatProvider — ИИ не учитывает угрозу дробовика.
 
+## Лидерборд (BoardScene)
+
+- `GET api/Game/Leaderboard` — возвращает `{ status, data: [{username, wins}] }`, отсортировано по убыванию побед.
+- `LeaderboardController` на отдельном GameObject в BoardScene — создаёт Canvas программно, строит таблицу через VerticalLayoutGroup.
+- DTO: `LeaderboardEntry` (username, wins), `LeaderboardResponse` (status, data) — в `Assets/Scripts/Network/DTO's/Leaderboard.cs`.
+- Победа = игра со `Status = true` в БД.
+
+## Сцена авторизации
+
+- LoginScene: диалог в стиле Sans/Undertale, кнопка login плавно уезжает после первого успешного входа (LoginController.MoveButton, duration=0.4s).
+- RegScene: RegisterController с защитой от двойного нажатия.
+- API: localhost:7206, AcceptAllCertificates, JsonUtility (lowercase поля).
+
 ## Тесты
 
 - 7 EditMode тестов в Assets/Tests/ChessTests.cs (NUnit).
 - Покрывают: PlacePiece, TryMovePiece, ClearWhitePieces, TakeDamage, TakeDamage clamp, ShotgunAmmo empty, ShotgunAttack hit.
-
-## Следующие шаги
-
-1. Анимация выстрела (вспышка, частицы).

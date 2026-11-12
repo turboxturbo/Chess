@@ -44,6 +44,21 @@ public class GameService : IGame
         return new OkObjectResult(new  { status = true, data = game });
     }
 
+    public async Task<IActionResult> Leaderboard()
+    {
+        var entries = await _db.Users
+            .Select(u => new
+            {
+                username = u.Username,
+                wins = u.Games.Count(g => g.Status),
+                losses = u.Games.Count(g => !g.Status)
+            })
+            .OrderByDescending(e => e.wins)
+            .ToListAsync();
+
+        return new OkObjectResult(new { status = true, data = entries });
+    }
+
     public async Task<IActionResult> Endgame([FromBody] int idGame)
     {
         var game = await _db.Games.FirstOrDefaultAsync(g => g.IdGame ==  idGame);

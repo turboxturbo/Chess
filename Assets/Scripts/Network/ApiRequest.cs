@@ -31,6 +31,20 @@ public static class ApiRequest
         GameManager.Instance.StartCoroutine(EndGameCoroutine(callback, gameId));
     }
 
+    public static IEnumerator LeaderboardCoroutine(Action<LeaderboardResponse> callback)
+    {
+        using UnityWebRequest request = UnityWebRequest.Get(_baseUrl + "Game/Leaderboard");
+        request.certificateHandler = new AcceptAllCertificates();
+        yield return request.SendWebRequest();
+        if (request.result == UnityWebRequest.Result.Success)
+            callback?.Invoke(JsonUtility.FromJson<LeaderboardResponse>(request.downloadHandler.text));
+        else
+        {
+            Debug.LogError($"Leaderboard error: {request.error}");
+            callback?.Invoke(null);
+        }
+    }
+
     public static IEnumerator LoginCoroutine(Action<LoginAnswer> callback, LoginRequest login)
     {
         string jsonData = JsonUtility.ToJson(login);
