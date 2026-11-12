@@ -1,4 +1,6 @@
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -12,6 +14,12 @@ public class PlayerInputController : MonoBehaviour
     [SerializeField, Min(1)] private int pelletDamage = 1;
     [SerializeField, Range(0, 180)] private float spreadDegrees = 30f;
     [SerializeField, Min(0.1f)] private float shotgunRange = 5f;
+    [Header("Pellet VFX")]
+    [SerializeField] private GameObject pelletPrefab;
+    [SerializeField] private float pelletSpeed = 20f;
+    [Header("Shotgun SFX")]
+    [SerializeField] private AudioClip shotClip;
+    [SerializeField, Range(0f, 1f)] private float shotVolume = 1f;
     [Header("Ammo UI")]
     [SerializeField] private ShotgunAmmoView ammoView;
     [Header("Piece Info")]
@@ -19,6 +27,7 @@ public class PlayerInputController : MonoBehaviour
     private ShotgunAttack _shotgun;
     public ShotgunAmmo Ammo { get; private set; }
     private bool _isAiming;
+    private readonly HashSet<PieceView> _shakingPieces = new();
     private LineRenderer _aimLine;
     private Material _aimMaterial;
     private Board _board;
@@ -146,6 +155,39 @@ public class PlayerInputController : MonoBehaviour
     {
         _isAiming = false;
         if (_aimLine != null) _aimLine.enabled = false;
+        StopAllShakes();
+    }
+
+    private void StopAllShakes()
+    {
+        foreach (var pv in _shakingPieces)
+            if (pv != null) pv.StopAimShake();
+        _shakingPieces.Clear();
+    }
+
+    private void UpdateAimShakes(int originX, int originY, Vector2 direction)
+    {
+        var inCone = new HashSet<PieceView>();
+        Vector2 originWorld = _boardManager.BoardToWorld(originX, originY);
+        float worldRange = Vector2.Distance(originWorld, _boardManager.BoardToWorld(originX + _shotgun.Range, originY));
+        Collider2D[] hits = Physics2D.OverlapCircleAll(originWorld, worldRange);
+        foreach (var col in hits)
+        {
+            PieceView pv = col.GetComponentInParent<PieceView>();
+            if (pv == null || pv.Piece == null || pv.Piece.Color != PieceColor.White) continue;
+            var topiece = new Vector2(pv.BoardX - originX, pv.BoardY - originY);
+            if (Vector2.Angle(direction, topiece) <= _shotgun.SpreadDegrees * 0.5f)
+                inCone.Add(pv);
+        }
+
+        foreach (var pv in _shakingPieces)
+            if (pv != null && !inCone.Contains(pv)) pv.StopAimShake();
+
+        foreach (var pv in inCone)
+            if (!_shakingPieces.Contains(pv)) pv.StartAimShake();
+
+        _shakingPieces.Clear();
+        foreach (var pv in inCone) _shakingPieces.Add(pv);
     }
 
     private bool TryGetAim(out int x, out int y, out Vector2 direction)
@@ -161,8 +203,10 @@ public class PlayerInputController : MonoBehaviour
         if (!TryGetAim(out int x, out int y, out Vector2 direction))
         {
             if (_aimLine != null) _aimLine.enabled = false;
+            StopAllShakes();
             return;
         }
+        UpdateAimShakes(x, y, direction);
         if (_aimLine == null)
         {
             var aimObject = new GameObject("Shotgun aim cone");
@@ -198,7 +242,13 @@ public class PlayerInputController : MonoBehaviour
             Debug.Log("Патронник пуст. Сделайте ход для перезарядки.");
             return;
         }
-        var damage = _shotgun.Fire(_board, x, y, direction.x, direction.y);
+        if (shotClip != null) AudioSource.PlayClipAtPoint(shotClip, _boardManager.BoardToWorld(x, y), shotVolume);
+        var (damage, pellets) = _shotgun.Fire(_board, x, y, direction.x, direction.y);
+        float pelletZ = _boardView.GetBlackKingView()?.transform.position.z ?? 0f;
+        Vector3 origin = _boardManager.BoardToWorld(x, y);
+        origin.z = pelletZ;
+        foreach (var pellet in pellets)
+            StartCoroutine(MovePellet(origin, pellet, pelletZ));
         _boardView.ApplyShot(damage);
         bool whiteKingKilled = false;
         foreach (var hit in damage)
@@ -211,6 +261,24 @@ public class PlayerInputController : MonoBehaviour
             GameManager.Instance.OnWhiteKingDefeated();
         CancelAim();
         PlayerMoveCompleted?.Invoke();
+    }
+
+    private IEnumerator MovePellet(Vector3 origin, PelletResult pellet, float z)
+    {
+        if (pelletPrefab == null) { Debug.LogWarning("Pellet prefab not assigned"); yield break; }
+        Vector3 target = _boardManager.BoardToWorld((float)pellet.EndX, (float)pellet.EndY);
+        target.z = z;
+        GameObject go = Instantiate(pelletPrefab, origin, Quaternion.identity);
+        while (go != null)
+        {
+            go.transform.position = Vector3.MoveTowards(go.transform.position, target, pelletSpeed * Time.deltaTime);
+            if (Vector3.Distance(go.transform.position, target) < 0.01f)
+            {
+                Destroy(go);
+                yield break;
+            }
+            yield return null;
+        }
     }
 
     private void OnDisable()

@@ -227,6 +227,10 @@ MonoBehaviour:
   pelletDamage: 1
   spreadDegrees: 30
   shotgunRange: 5
+  pelletPrefab: {fileID: 1202994433657537953, guid: 9a99bf11681f54a949f3b2fd185f559a, type: 3}
+  pelletSpeed: 15
+  shotClip: {fileID: 8300000, guid: 9f0f428a2447848129b6f32c5f8b2ab4, type: 3}
+  shotVolume: 1
   ammoView: {fileID: 1368003367}
   pieceInfoView: {fileID: 707160328}
 --- !u!4 &57338729
@@ -1542,7 +1546,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -2.0002441, y: -11.000183}
+  m_AnchoredPosition: {x: -2.000122, y: -11.000092}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &552474440
@@ -2753,7 +2757,6 @@ MonoBehaviour:
   dropHeight: 8
   dropDelay: 0.2
   blackKingDropDelay: 1
-  landAudioSource: {fileID: 1386279610}
   landClip: {fileID: 8300000, guid: fdf30bb59c8594e28b0a60ebcf9f3b7a, type: 3}
   landPitchVariance: 0.1
   damagePopupPrefab: {fileID: 1170642043323285624, guid: 5a24ecfd95cbf4627a9bc87eb0d3dfaa, type: 3}

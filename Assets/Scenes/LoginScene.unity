@@ -1007,7 +1007,8 @@ MonoBehaviour:
 
     you really thought it''d be that easy?'
   secondText: ...
-  trickButtonPosition: {x: -600, y: 300}
+  trickButtonPosition: {x: -240, y: 103}
+  trickMoveDuration: 0.1
 --- !u!4 &458691970
 Transform:
   m_ObjectHideFlags: 0

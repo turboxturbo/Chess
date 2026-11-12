@@ -109,7 +109,7 @@ public class ChessTests
             range: 5f,
             seed: 42);
 
-        var damage = shotgun.Fire(board, 0, 0, 0f, 1f);
+        var (damage, _) = shotgun.Fire(board, 0, 0, 0f, 1f);
 
         Assert.IsTrue(damage.ContainsKey(target));
         Assert.Greater(damage[target], 0);

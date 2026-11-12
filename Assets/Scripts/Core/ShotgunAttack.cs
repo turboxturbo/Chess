@@ -1,6 +1,13 @@
 using System;
 using System.Collections.Generic;
 
+public struct PelletResult
+{
+    public double EndX;
+    public double EndY;
+    public ChessPiece HitPiece;
+}
+
 // Coordinates and distances are measured in board cells, independently of Unity physics.
 public sealed class ShotgunAttack
 {
@@ -24,7 +31,7 @@ public sealed class ShotgunAttack
         _random = seed.HasValue ? new Random(seed.Value) : new Random();
     }
 
-    public Dictionary<ChessPiece, int> Fire(Board board, int originX, int originY,
+    public (Dictionary<ChessPiece, int> damage, List<PelletResult> pellets) Fire(Board board, int originX, int originY,
         float directionX, float directionY)
     {
         if (!(board.ChessBoard[originX, originY].CurrentPiece is BlackKing))
@@ -35,6 +42,7 @@ public sealed class ShotgunAttack
             throw new ArgumentException("Aim direction must be nonzero and finite.");
 
         var damage = new Dictionary<ChessPiece, int>();
+        var pellets = new List<PelletResult>(PelletCount);
         double aim = Math.Atan2(directionY, directionX);
         double halfSpread = SpreadDegrees * Math.PI / 180 * 0.5;
         double segmentSize = SpreadDegrees * Math.PI / 180 / PelletCount;
@@ -45,6 +53,7 @@ public sealed class ShotgunAttack
             double dx = Math.Cos(angle), dy = Math.Sin(angle);
             double nearest = double.PositiveInfinity;
             ChessPiece target = null;
+            int targetX = 0, targetY = 0;
             for (int x = 0; x < board.Width; x++)
             for (int y = 0; y < board.Height; y++)
             {
@@ -56,10 +65,16 @@ public sealed class ShotgunAttack
                 {
                     nearest = entry;
                     target = piece;
+                    targetX = x;
+                    targetY = y;
                 }
             }
             if (target != null)
                 damage[target] = (damage.TryGetValue(target, out int hits) ? hits : 0) + PelletDamage;
+
+            double endX = target != null ? targetX : originX + dx * Range;
+            double endY = target != null ? targetY : originY + dy * Range;
+            pellets.Add(new PelletResult { EndX = endX, EndY = endY, HitPiece = target });
         }
 
         // Resolve every pellet before removing casualties: no shooting through a dying blocker.
@@ -70,7 +85,7 @@ public sealed class ShotgunAttack
             ChessPiece piece = board.ChessBoard[x, y].CurrentPiece;
             if (piece != null && piece.Health == 0) board.ChessBoard[x, y].CurrentPiece = null;
         }
-        return damage;
+        return (damage, pellets);
     }
 
     private static bool IntersectAxis(double origin, double direction, int cell,

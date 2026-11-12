@@ -23,7 +23,8 @@ public class LoginController : MonoBehaviour
     [SerializeField] private DialogueTyper dialogueTyper;
     [SerializeField, TextArea(2, 5)] private string trickText = "* heh.\n* you really thought it'd be that easy?";
     [SerializeField, TextArea(2, 5)] private string secondText = "* ...ok fine. go ahead.";
-    [SerializeField] private Vector2 trickButtonPosition = new Vector2(-584.4999f, 297.5f);
+    [SerializeField] private Vector2 trickButtonPosition = new Vector2(-240f, 103f);
+    [SerializeField] private float trickMoveDuration = 0.4f;
 
     private bool _tricked;
 
@@ -64,7 +65,7 @@ public class LoginController : MonoBehaviour
 
         if (answer != null && answer.status)
         {
-            TeleportButton();
+            StartCoroutine(MoveButton());
             if (dialogueTyper != null)
             {
                 dialogueTyper.Play(trickText);
@@ -89,9 +90,18 @@ public class LoginController : MonoBehaviour
         dialogueTyper?.Play(secondText);
     }
 
-    private void TeleportButton()
+    private IEnumerator MoveButton()
     {
-        loginButton.GetComponent<RectTransform>().anchoredPosition = trickButtonPosition;
+        var rt = loginButton.GetComponent<RectTransform>();
+        Vector2 from = rt.anchoredPosition;
+        float elapsed = 0f;
+        while (elapsed < trickMoveDuration)
+        {
+            elapsed += Time.unscaledDeltaTime;
+            rt.anchoredPosition = Vector2.Lerp(from, trickButtonPosition, elapsed / trickMoveDuration);
+            yield return null;
+        }
+        rt.anchoredPosition = trickButtonPosition;
     }
 
     private IEnumerator FadeToWhiteAndLoad()

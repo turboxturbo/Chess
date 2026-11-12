@@ -17,6 +17,7 @@ public class PieceView : MonoBehaviour
 
     private Coroutine _moveCoroutine;
     private Coroutine _flashCoroutine;
+    private Coroutine _shakeCoroutine;
     private bool _isDropping;
 
     private void Awake()
@@ -99,6 +100,32 @@ public class PieceView : MonoBehaviour
         IsMoving = false;
         Landed?.Invoke();
         onComplete?.Invoke();
+    }
+
+    public void StartAimShake(float strength = 0.04f)
+    {
+        if (_shakeCoroutine != null) return;
+        _shakeCoroutine = StartCoroutine(AimShakeCoroutine(strength));
+    }
+
+    public void StopAimShake()
+    {
+        if (_shakeCoroutine == null) return;
+        StopCoroutine(_shakeCoroutine);
+        _shakeCoroutine = null;
+        transform.position = _basePosition;
+    }
+
+    private Vector3 _basePosition;
+
+    private IEnumerator AimShakeCoroutine(float strength)
+    {
+        _basePosition = transform.position;
+        while (true)
+        {
+            transform.position = _basePosition + (Vector3)(UnityEngine.Random.insideUnitCircle * strength);
+            yield return null;
+        }
     }
 
     public void ShowHitEffect(int damage, GameObject popupPrefab)

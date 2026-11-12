@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using System.Collections;
 
 public class BoardView : MonoBehaviour
 {
@@ -17,10 +18,10 @@ public class BoardView : MonoBehaviour
     [SerializeField] private float blackKingDropDelay = 1.2f;
 
     [Header("Land Sound")]
-    [SerializeField] private AudioSource landAudioSource;
     [SerializeField] private AudioClip landClip;
     [SerializeField, Range(0.8f, 1.2f)] private float landPitchVariance = 0.1f;
 
+    private AudioSource _landAudioSource;
     private int _spawnIndex;
     private Board _board;
 
@@ -28,6 +29,8 @@ public class BoardView : MonoBehaviour
 
     public void Initialize(Board board)
     {
+        _landAudioSource = gameObject.AddComponent<AudioSource>();
+        _landAudioSource.playOnAwake = false;
         if (board == null)
         {
             Debug.LogError("Game board is not initialized.");
@@ -45,14 +48,14 @@ public class BoardView : MonoBehaviour
 
         _pieceViews[pieceView.Piece] = pieceView;
 
-        if (landClip != null && landAudioSource != null)
+        if (landClip != null)
             pieceView.Landed += () => PlayLandSound();
     }
 
     private void PlayLandSound()
     {
-        landAudioSource.pitch = 1f + UnityEngine.Random.Range(-landPitchVariance, landPitchVariance);
-        landAudioSource.PlayOneShot(landClip);
+        _landAudioSource.pitch = 1f + UnityEngine.Random.Range(-landPitchVariance, landPitchVariance);
+        _landAudioSource.PlayOneShot(landClip);
     }
 
     private PieceView GetPrefab(ChessPiece piece)
@@ -173,6 +176,19 @@ public class BoardView : MonoBehaviour
         pieceView.InitializeDrop(x, y, piece, boardManager, _spawnIndex * dropDelay, dropHeight);
         _spawnIndex++;
         Register(pieceView);
+    }
+
+    public IEnumerable<PieceView> GetWhitePieceViews()
+    {
+        foreach (var kv in _pieceViews)
+            if (kv.Key.Color == PieceColor.White) yield return kv.Value;
+    }
+
+    public PieceView GetBlackKingView()
+    {
+        foreach (var kv in _pieceViews)
+            if (kv.Key is BlackKing) return kv.Value;
+        return null;
     }
 
     public void ResetSpawnIndex() => _spawnIndex = 0;
