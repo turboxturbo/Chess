@@ -230,7 +230,7 @@ MonoBehaviour:
   pelletPrefab: {fileID: 1202994433657537953, guid: 9a99bf11681f54a949f3b2fd185f559a, type: 3}
   pelletSpeed: 15
   shotClip: {fileID: 8300000, guid: 9f0f428a2447848129b6f32c5f8b2ab4, type: 3}
-  shotVolume: 1
+  shotVolume: 10
   ammoView: {fileID: 1368003367}
   pieceInfoView: {fileID: 707160328}
 --- !u!4 &57338729

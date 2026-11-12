@@ -19,6 +19,7 @@ public class PieceView : MonoBehaviour
     private Coroutine _flashCoroutine;
     private Coroutine _shakeCoroutine;
     private bool _isDropping;
+    private Vector3 _basePosition;
 
     private void Awake()
     {
@@ -90,10 +91,7 @@ public class PieceView : MonoBehaviour
         IsMoving = true;
         while (Vector3.Distance(transform.position, target) > 0.001f)
         {
-            transform.position = Vector3.MoveTowards(
-                transform.position,
-                target,
-                moveSpeed * Time.deltaTime);
+            transform.position = Vector3.MoveTowards(transform.position, target, moveSpeed * Time.deltaTime);
             yield return null;
         }
         transform.position = target;
@@ -115,8 +113,6 @@ public class PieceView : MonoBehaviour
         _shakeCoroutine = null;
         transform.position = _basePosition;
     }
-
-    private Vector3 _basePosition;
 
     private IEnumerator AimShakeCoroutine(float strength)
     {
