@@ -12,8 +12,16 @@ public class MusicPlayer : MonoBehaviour
 
     private void Start()
     {
+        Initialize();
+    }
+
+    public void Initialize()
+    {
         if (tracks.Length == 0) return;
+        audioSource.playOnAwake = false;
+        audioSource.pitch = 1f;
         audioSource.loop = false;
+        audioSource.ignoreListenerPause = true;
         audioSource.volume = volume;
         PlayTrack(0);
     }
@@ -31,6 +39,7 @@ public class MusicPlayer : MonoBehaviour
         _currentTrack = index % tracks.Length;
         audioSource.clip = tracks[_currentTrack];
         audioSource.volume = volume;
+        audioSource.pitch = 1f;
         audioSource.Play();
     }
 

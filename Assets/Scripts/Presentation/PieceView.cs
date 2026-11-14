@@ -7,7 +7,7 @@ using UnityEngine;
 public class PieceView : MonoBehaviour
 {
     [SerializeField] private float moveSpeed = 12f;
-    [SerializeField] private float dropSpeed = 4f;
+    private const float dropSpeed = 10f;
 
     public ChessPiece Piece { get; private set; }
     public int BoardX { get; private set; }
