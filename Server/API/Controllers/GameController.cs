@@ -30,4 +30,11 @@ public class GameController : ControllerBase
     {
         return await _game.Endgame(idGame);
     }
+
+    [HttpGet]
+    [Route("Leaderboard")]
+    public async Task<IActionResult> Leaderboard()
+    {
+        return await _game.Leaderboard();
+    }
 }
