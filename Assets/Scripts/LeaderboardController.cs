@@ -9,8 +9,9 @@ using UnityEngine.UI;
 public class LeaderboardController : MonoBehaviour
 {
     [SerializeField] private TMP_FontAsset font;
-    private const float rowHeight = 50f;
-    private const float fontSize = 30f;
+    [SerializeField] private AudioClip backButtonHoverSound;
+    private const float rowHeight = 44f;
+    private const float fontSize = 36f;
 
     private void Start()
     {
@@ -87,7 +88,7 @@ public class LeaderboardController : MonoBehaviour
         var go = new GameObject("Title");
         go.transform.SetParent(parent, false);
         var le = go.AddComponent<LayoutElement>();
-        le.preferredHeight = rowHeight;
+        le.preferredHeight = fontSize * 1.5f + 10f;
         var tmp = go.AddComponent<TextMeshProUGUI>();
         tmp.text = "LEADERBOARD";
         tmp.fontSize = fontSize * 1.5f;
@@ -107,7 +108,7 @@ public class LeaderboardController : MonoBehaviour
         var le = row.AddComponent<LayoutElement>();
         le.preferredHeight = rowHeight;
         var hlg = row.AddComponent<HorizontalLayoutGroup>();
-        hlg.padding = new RectOffset(16, 16, 8, 8);
+        hlg.padding = new RectOffset(16, 16, 4, 4);
         hlg.spacing = 8f;
         hlg.childForceExpandHeight = true;
         hlg.childForceExpandWidth = false;
@@ -150,6 +151,9 @@ public class LeaderboardController : MonoBehaviour
         var btn = go.AddComponent<Button>();
         btn.transition = Selectable.Transition.None;
         btn.onClick.AddListener(() => SceneManager.LoadScene("LoginScene"));
+
+        var hoverSound = go.AddComponent<ButtonHoverSound>();
+        hoverSound.SetHoverSound(backButtonHoverSound);
 
         var tmp = go.AddComponent<TextMeshProUGUI>();
         tmp.text = "BACK";

@@ -415,6 +415,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LeaderboardController
   font: {fileID: 11400000, guid: 25d7504613def6f4c92816c07adf523c, type: 2}
+  backButtonHoverSound: {fileID: 8300000, guid: 4d8efbbbb464140209e5b25deb97244d, type: 3}
 --- !u!1 &2017236970
 GameObject:
   m_ObjectHideFlags: 0
