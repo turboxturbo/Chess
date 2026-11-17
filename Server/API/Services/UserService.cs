@@ -29,7 +29,7 @@ public class UserService : IUser
     {
         var user = await _db.Users.FirstOrDefaultAsync(u => u.Username == request.Username);
         if (user != null)
-            return new OkObjectResult(new { status = false, message = "Пользователь уже существует" });
+            return new OkObjectResult(new { status = false, message = "Username already exists" });
 
         try
         {

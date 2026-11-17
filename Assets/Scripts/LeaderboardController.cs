@@ -73,7 +73,7 @@ public class LeaderboardController : MonoBehaviour
         AddTitle(column);
 
         // Шапка таблицы
-        AddRow(column, "#", "ИГРОК", "ПОБЕДЫ", "ПОРАЖЕНИЯ", new Color(0.07058824f, 0.09411765f, 0.18823529f), true, new Color(0.953f, 0.910f, 0.827f));
+        AddRow(column, "#", "PLAYER", "WINS", "LOSSES", new Color(0.07058824f, 0.09411765f, 0.18823529f), true, new Color(0.953f, 0.910f, 0.827f));
 
         // Строки
         for (int i = 0; i < entries.Count; i++)

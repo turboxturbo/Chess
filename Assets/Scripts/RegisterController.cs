@@ -28,8 +28,8 @@ public class RegisterController : MonoBehaviour
 
         if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
         {
-            ShowError(usernameField, "Введите имя пользователя");
-            ShowError(passwordField, "Введите пароль");
+            ShowError(usernameField, "Enter a username");
+            ShowError(passwordField, "Enter a password");
             return;
         }
 
@@ -55,7 +55,7 @@ public class RegisterController : MonoBehaviour
         {
             string error = answer != null && !string.IsNullOrEmpty(answer.message)
                 ? answer.message
-                : "Ошибка регистрации";
+                : "Registration failed";
             ShowError(usernameField, error);
             ShowError(passwordField, error);
         }
@@ -67,6 +67,6 @@ public class RegisterController : MonoBehaviour
     private void ShowError(TMP_InputField field, string message)
     {
         field.text = "";
-        field.placeholder.GetComponent<TMP_Text>().text = message;
+        field.placeholder.GetComponent<TMP_Text>().text = " " + message.TrimStart();
     }
 }

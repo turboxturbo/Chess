@@ -77,8 +77,8 @@ public class LoginController : MonoBehaviour
         {
             usernameField.text = "";
             passwordField.text = "";
-            usernameField.placeholder.GetComponent<TMP_Text>().text = "Неверный логин или пароль";
-            passwordField.placeholder.GetComponent<TMP_Text>().text = "Неверный логин или пароль";
+            usernameField.placeholder.GetComponent<TMP_Text>().text = " Invalid username or password";
+            passwordField.placeholder.GetComponent<TMP_Text>().text = " Invalid username or password";
         }
 
         loginButton.interactable = true;

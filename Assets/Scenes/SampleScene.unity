@@ -3227,7 +3227,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::MusicPlayer
   audioSource: {fileID: 1386279610}
   tracks:
-  - {fileID: 8300000, guid: e18738b15891047729df0601df548f38, type: 3}
+  - {fileID: 8300000, guid: 95ebb2a954ff34b9cb2af74253520a48, type: 3}
   volume: 0.5
 --- !u!4 &1386279612
 Transform:
